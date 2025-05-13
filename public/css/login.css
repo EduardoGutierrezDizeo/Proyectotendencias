@@ -1,6 +1,6 @@
 
 body {
-    background: linear-gradient(180deg, #D8BFD8, #E6A8D7, #FFC0CB, #FFF5F7);
+    background: linear-gradient(180deg, #ffffff, #ffd1d1, #ff8095, #ff0000);
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -16,6 +16,10 @@ body {
     border: 2px solid #A674D6;
 }
 
+.btn-link{
+    margin-top: 20px; 
+    padding: 0px !important;
+}
 
 .profile-img {
     width: 120px; 
@@ -33,6 +37,7 @@ body {
     padding: 10px;
 }
 
+
 .form-control:focus {
     border-color: #7B52B9;
     box-shadow: 0px 0px 8px rgba(123, 82, 185, 0.5);
@@ -40,17 +45,19 @@ body {
 
 
 .btn-primary {
-    background: #A674D6 !important;
+    background: #ff0000 !important;
     border: none !important;
     font-weight: bold;
     border-radius: 10px;
     padding: 10px;
-    transition: background 0.3s ease;
+    transition: background 0.3s ease, color 0.3s ease, border 0.3s ease;
     color: white !important;
 }
 
 .btn-primary:hover {
-    background: #7B52B9 !important;
+    background: rgb(255, 255, 255) !important;
+    border: #ff0000 2px solid !important;
+    color: #ff0000 !important;
 }
 
 
@@ -62,7 +69,7 @@ a {
 }
 
 a:hover {
-    color: #A674D6 !important; /* Morado */
+    color: #ff0000 !important; /* Morado */
 }
 
 
@@ -73,7 +80,7 @@ a:hover {
 }
 /* 🔲 Estilo de los campos de entrada */
 .form-control {
-    border: 1px solid #A674D6 !important; /* Borde morado */
+    border: 1px solid #ff0000 !important; /* Borde morado */
     border-radius: 5px;
     padding: 5px;
     background: rgba(246, 228, 255, 0.5); /* Fondo moradito claro */
@@ -82,15 +89,28 @@ a:hover {
 
 
 .form-control:focus {
-    border-color: #7B52B9 !important; /* Borde morado más oscuro */
-    box-shadow: 0px 0px 8px rgba(123, 82, 185, 0.5) !important;
+    border-color: #ff0000 !important; /* Borde morado más oscuro */
+    box-shadow: 0px 0px 8px #ff8181 !important;
     background: rgba(240, 220, 255, 0.7); /* Un poco más oscuro al hacer focus */
 }
 
 
 .input-group-text {
-    background: #E6A8D7 !important; /* Rosa pastel */
-    border: 1px solid #A674D6 !important;
+    background: #ff0000 !important; /* Rosa pastel */
+    border: 1px solid #ff0000 !important;
     color: white !important;
     border-radius: 5px;
+}
+
+.card-header {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.comando-registro{
+    display: flex;
+}
+
+.cont-comando-registro{
+    width: 100%;
 }
