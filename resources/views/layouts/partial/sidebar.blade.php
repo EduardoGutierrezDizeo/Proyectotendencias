@@ -1,9 +1,9 @@
 <!-- Main Sidebar Container -->
-<aside class="main-sidebar elevation-4" style="background-color: #d0bdf4; color: white;">
+<aside class="main-sidebar elevation-4" style="background-color: #e20000; color: white;">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link text-center" style="background-color: #c2a8f0; color: white;">
-      <img src="img/logo.jpeg" alt="Distribuciones Jayu Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-bold">Distribuciones Jayu</span>
+    <a href="#" class="brand-link text-center" style="background-color: #ffffff; color: black;">
+      <img src="img/logo.png" alt="Distribuciones Jayu Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-bold">Mister Chef</span>
     </a>
 
     <!-- Sidebar -->
@@ -12,9 +12,9 @@
       <div class="form-inline mt-3">
         <div class="input-group" data-widget="sidebar-search">
           <input class="form-control form-control-sidebar" type="search" placeholder="Buscar" aria-label="Search"
-          style="background-color: #c2a8f0; color: black; border: none; font-weight: bold;">
+          style="background-color: #ffd1d1; color: black; border: none; font-weight: bold;">
           <div class="input-group-append">
-            <button class="btn btn-sidebar" style="background-color: #ff66b2; color: white;">
+            <button class="btn btn-sidebar" style="background-color: white; color: black;">
               <i class="fas fa-search fa-fw"></i>
             </button>
           </div>
@@ -62,7 +62,7 @@
 
           <li class="nav-item">
             <a href="#" class="nav-link" style="color: white;">
-              <i class="nav-icon fas fa-copy" style="color: #ff66b2;"></i>
+              <i class="nav-icon fas fa-copy" style="color: white;"></i>
               <p>
                 Layout Options
                 <i class="fas fa-angle-left right"></i>

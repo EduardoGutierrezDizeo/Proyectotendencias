@@ -54,11 +54,17 @@
                             </div>
                         </div>
 
-                        <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary btn-lg w-100">
+                        <div class="row mb-0 cont-comando-registro">
+                            <div class="col-md-6 offset-md-4 comando-registro">
+                                <button type="submit" class="btn btn-primary btn-lg">
                                     {{ __('Register') }}
                                 </button>
+                                <a
+                                        href="{{ url('/login') }}"
+                                        class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                    >
+                                        Iniciar sesion
+                                </a>
                             </div>
                         </div>
                     </form>

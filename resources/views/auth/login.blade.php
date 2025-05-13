@@ -6,7 +6,7 @@
   
   <div class="card custom-card">
   <div class="login-logo">
-    <img src="img/logo.jpeg" alt="Logo" class="profile-img">
+    <img src="img/logo.png" alt="Logo" class="profile-img">
   </div>
     <div class="card-body login-card-body">
       <p class="login-box-msg">{{ __('Sign in to start your session') }}</p>
@@ -48,7 +48,7 @@
         </div>
       </form>
 
-      <p class="mb-1">
+      <p class="mb-1 ">
         @if (Route::has('password.request'))
           <a class="btn btn-link" href="{{ route('password.request') }}">
             {{ __('Forgot Your Password?') }}
@@ -56,7 +56,7 @@
         @endif
       </p>
       
-      <p class="mb-0">
+      <p class="mb-0 ">
       <a href="{{ route('register') }}" class="text-center">{{ __('Register a new membership') }}</a>
 
       </p>
