@@ -30,7 +30,12 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('carteraProveedores', CarteraProveedoresController::class);
     Route::resource('carteraClientes', CarteraClientesController::class);
     Route::resource('pagos', PagosController::class);
-   
+    
+    //clase del 22/05/2025
+    Route::get('factura/pdf/{id}', [FacturaController::class, 'generatePDF'])->name('factura.pdf');
+
+
+
     Route::get('cambioestadoproducto', [ProductoController::class, 'cambioestadoproducto'])->name('cambioestadoproducto');
     Route::get('cambioestadocliente', [ClienteController::class, 'cambioestadocliente'])->name('cambioestadocliente');
     Route::get('cambioestadoproveedor', [ProveedorController::class, 'cambioestadoproveedor'])->name('cambioestadoproveedor');
