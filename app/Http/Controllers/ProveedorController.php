@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Proveedor;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
+use Exception;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class ProveedorController extends Controller
@@ -11,11 +14,13 @@ class ProveedorController extends Controller
     use ValidatesRequests;
 
     // Mostrar la lista de proveedores
-    public function index()
-    {
-        $proveedores = Proveedor::all();  
-        return view('proveedores.index', compact('proveedores'));
-    }
+   public function index()
+{
+    $proveedores = Proveedor::all();  
+    
+    return view('proveedores.index', compact('proveedores'));
+}
+
 
     public function create()
     {
@@ -63,10 +68,27 @@ class ProveedorController extends Controller
     }
 
     // Eliminar un proveedor
-    public function destroy(Proveedor $proveedor)
+      public function destroy(Proveedor $proveedor)
     {
-        $proveedor->delete();
+		try {
+            $proveedor->delete();
+            return redirect()->route('proveedores.index')->with('successMsg', 'El registro se eliminó exitosamente');
+        } catch (QueryException $e) {
+            // Capturar y manejar violaciones de restricción de clave foránea
+            Log::error('Error al eliminar el país: ' . $e->getMessage());
+            return redirect()->route('proveedores.index')->withErrors('El registro que desea eliminar tiene información relacionada. Comuníquese con el Administrador');
+        } catch (Exception $e) {
+            // Capturar y manejar cualquier otra excepción
+            Log::error('Error inesperado al eliminar el país: ' . $e->getMessage());
+            return redirect()->route('proveedores.index')->withErrors('Ocurrió un error inesperado al eliminar el registro. Comuníquese con el Administrador');
+        }
+    }
 
-        return redirect()->route('proveedores.index')->with('success', 'Proveedor eliminado correctamente.');
+
+     public function cambioestadoproveedor(Request $request)
+    {
+        $proveedor = Proveedor::find($request->id);
+        $proveedor->estado = $request->estado;
+        $proveedor->save();
     }
 }

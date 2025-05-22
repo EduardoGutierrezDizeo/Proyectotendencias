@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('proveedor_id');
             $table->date('fecha_compra');
             $table->decimal('total_compra', 8, 2);
-            $table->boolean('estado_pago');
+            $table->boolean('estado');
             $table->unsignedBigInteger('registrado_por');
             $table->timestamps();
 

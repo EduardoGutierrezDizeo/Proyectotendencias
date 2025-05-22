@@ -5,24 +5,29 @@ namespace App\Http\Controllers;
 use App\Models\Factura;
 use App\Models\Cliente;
 use App\Models\Vendedor;
-use App\Models\Producto; // ← ¡Aquí importamos el modelo Producto!
+use App\Models\Producto; 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Database\QueryException;
+use Exception;
 
 class FacturaController extends Controller
 {
-    // Mostrar todas las facturas
-    public function index()
-    {
-        $facturas = Factura::with('cliente', 'vendedor')->get();
-        return view('facturas.index', compact('facturas'));
-    }
+    // Mostrar todas las facturas con detalles y productos relacionados
+   public function index()
+{
+
+     $facturas = Factura::with(['vendedor', 'detalleFacturas.producto'])->get();
+    return view('facturas.index', compact('facturas'));
+}
+
 
     // Mostrar el formulario para crear una nueva factura
     public function create()
     {
         $clientes = Cliente::all();
         $vendedores = Vendedor::all();
-        $productos = Producto::all(); // ← ¡Aquí traemos los productos!
+        $productos = Producto::all();
 
         return view('facturas.create', compact('clientes', 'vendedores', 'productos'));
     }
@@ -53,6 +58,7 @@ class FacturaController extends Controller
     {
         $clientes = Cliente::all();
         $vendedores = Vendedor::all();
+
         return view('facturas.edit', compact('factura', 'clientes', 'vendedores'));
     }
 
@@ -80,8 +86,29 @@ class FacturaController extends Controller
     // Eliminar una factura
     public function destroy(Factura $factura)
     {
-        $factura->delete();
+        try {
+            $factura->delete();
+            return redirect()->route('facturas.index')->with('successMsg', 'El registro se eliminó exitosamente');
+        } catch (QueryException $e) {
+            Log::error('Error al eliminar la factura: ' . $e->getMessage());
+            return redirect()->route('facturas.index')->withErrors('El registro que desea eliminar tiene información relacionada. Comuníquese con el Administrador');
+        } catch (Exception $e) {
+            Log::error('Error inesperado al eliminar la factura: ' . $e->getMessage());
+            return redirect()->route('facturas.index')->withErrors('Ocurrió un error inesperado al eliminar el registro. Comuníquese con el Administrador');
+        }
+    }
 
-        return redirect()->route('facturas.index')->with('success', 'Factura eliminada con éxito');
+    // Cambiar el estado de la factura vía AJAX o similar
+    public function cambioestadofactura(Request $request)
+    {
+        $factura = Factura::find($request->id);
+        $factura->estado = $request->estado;
+        $factura->save();
+    }
+
+    // Mostrar detalle de factura (puedes personalizar la vista después)
+    public function show(Factura $factura)
+    {
+        return "Vista de factura aún no disponible.";
     }
 }
