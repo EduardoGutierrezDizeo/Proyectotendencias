@@ -2,19 +2,20 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Cliente;
+use App\Models\Vendedor;
 use App\Models\Proveedor;
 use App\Models\Producto;
+use App\Models\Compra;
 use App\Models\Factura;
 use App\Models\DetalleFactura;
-use App\Models\Pago;
-use App\Models\Compra;
 use App\Models\DetalleCompra;
-use App\Models\Vendedor;
+use App\Models\Pago;
 use App\Models\CarteraCliente;
 use App\Models\CarteraProveedor;
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,34 +24,30 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Crear usuarios
-        User::factory(10)->create();
+        // Crear usuario administrador
+        User::create([
+            'name' => 'Eduardo Gutierrez de Piñerez',
+            'email' => 'edojose1518@gmail.com',
+            'password' => bcrypt('ripazha02'),
+        ]);
 
-        // Crear vendedores
+        // Crear datos de prueba
+        User::factory(5)->create();
+        Cliente::factory(20)->create();
         Vendedor::factory(5)->create();
-
-        // Crear proveedores
         Proveedor::factory(10)->create();
-
-        // Crear clientes
-        Cliente::factory(15)->create();
-
-        // Crear productos
         Producto::factory(50)->create();
 
-        // Crear compras y detalles de compra
-        Compra::factory(30)->create();
-        DetalleCompra::factory(60)->create(); // 2 detalles por compra aprox.
+        Compra::factory(15)
+            ->has(DetalleCompra::factory()->count(3), 'detallesCompra') 
+            ->create();
 
-        // Crear facturas y detalles de factura
-        Factura::factory(40)->create();
-        DetalleFactura::factory(80)->create(); // 2 detalles por factura aprox.
+        Factura::factory(30)
+            ->has(DetalleFactura::factory()->count(4), 'detallesFactura')
+            ->create();
 
-        // Crear pagos
-        Pago::factory(50)->create();
-
-        // Crear carteras
-        CarteraCliente::factory(20)->create();
-        CarteraProveedor::factory(20)->create();
+        Pago::factory(20)->create();
+        CarteraCliente::factory(15)->create();
+        CarteraProveedor::factory(10)->create();
     }
 }

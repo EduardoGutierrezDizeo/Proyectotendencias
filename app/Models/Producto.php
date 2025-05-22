@@ -13,24 +13,29 @@ class Producto extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
+        'proveedor_id',
         'nombre',
-        'descripcion',
+        'gramaje',
         'precio_compra',
         'precio_venta',
-        'stock',
-        'categoria',
-        'proveedor_id',
+        'stockActual',
+        'stockMinimo',
         'estado',
         'registrado_por',
     ];
 
     public function proveedor()
     {
-        return $this->belongsTo(Proveedor::class);
+        return $this->belongsTo(Proveedor::class, 'proveedor_id');
     }
 
-    public function detalleFacturas()
+    public function detallesFactura()
     {
-        return $this->hasMany(DetalleFactura::class);
+        return $this->hasMany(DetalleFactura::class, 'producto_id');
+    }
+
+    public function detallesCompra()
+    {
+        return $this->hasMany(DetalleCompra::class, 'producto_id');
     }
 }

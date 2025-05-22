@@ -2,27 +2,22 @@
 
 namespace Database\Factories;
 
-use App\Models\Producto;
-use App\Models\Proveedor;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProductoFactory extends Factory
 {
-    protected $model = Producto::class;
-
-    public function definition(): array
+    public function definition()
     {
         return [
-            'nombre' => $this->faker->name(),
-            'descripcion' => $this->faker->text,
-            'registrado_por'=> \app\Models\User::factory(),
-            'precio_compra' => $this->faker->randomFloat(2, 100, 1000),
-            'precio_venta' => $this->faker->randomFloat(2, 1100, 2000),
-            'stock' => $this->faker->numberBetween(0, 100),
-            'categoria' => $this->faker->randomElement(['Aseo', 'Comida', 'Electrónica']),
+            'proveedor_id' => \App\Models\Proveedor::inRandomOrder()->first()->id,
+            'nombre' => $this->faker->word,
+            'gramaje' => $this->faker->randomFloat(2, 0.1, 1000),
+            'precio_compra' => $this->faker->randomFloat(2, 1, 100),
+            'precio_venta' => $this->faker->randomFloat(2, 1.5, 150),
+            'stockActual' => $this->faker->numberBetween(0, 500),
+            'stockMinimo' => $this->faker->numberBetween(5, 50),
             'estado' => $this->faker->boolean(),
-            'proveedor_id' => \App\Models\Proveedor::inRandomOrder()->first()?->id ?? 1,
+            'registrado_por' => \App\Models\User::inRandomOrder()->first()->id,
         ];
     }
 }

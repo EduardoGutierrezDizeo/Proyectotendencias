@@ -6,15 +6,15 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProveedorFactory extends Factory
 {
-    public function definition(): array
+    public function definition()
     {
         return [
             'nombre' => $this->faker->company,
             'telefono' => $this->faker->phoneNumber,
+            'correo_electronico' => $this->faker->unique()->companyEmail,
             'direccion' => $this->faker->address,
-            'correo_electronico' => $this->faker->safeEmail,
             'estado' => $this->faker->boolean(),
-            'registrado_por' => 'admin',
+            'registrado_por' => \App\Models\User::inRandomOrder()->first()->id,
         ];
     }
 }

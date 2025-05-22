@@ -18,25 +18,13 @@ class Cliente extends Model
         'direccion',
         'nit',
         'correo_electronico',
-        'credito_disponible',
-        'deuda_actual',
         'estado',
         'registrado_por',
     ];
 
     public function facturas()
     {
-        return $this->hasMany(Factura::class);
-    }
-
-    public function carteraCliente()
-    {
-        return $this->hasOne(CarteraCliente::class);
-    }
-
-    public function pagos()
-    {
-    return $this->hasMany(Pago::class);
+        return $this->hasMany(Factura::class, 'cliente_id');
     }
 
 }

@@ -13,40 +13,41 @@ class Factura extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'nombre_cliente',
-        'nit_cliente',
-        'telefono_cliente',
-        'nombre_negocio',
-        'ruta',
-        'fecha_venta',
-        'subtotal',
-        'total_factura',
         'cliente_id',
-        'vendedor_id',
+        'fecha',
+        'total',
         'estado',
         'registrado_por',
     ];
 
-    public function pagos()
-    {
-    return $this->hasMany(Pago::class);
-    }
-
     public function cliente()
     {
-        return $this->belongsTo(Cliente::class);
+        return $this->belongsTo(Cliente::class, 'cliente_id');
     }
 
-    public function vendedor()
+    public function usuario()
     {
-        return $this->belongsTo(Vendedor::class,'vendedor_id');
+        return $this->belongsTo(User::class, 'usuario_id');
     }
 
-    public function detalleFacturas()
+    public function detallesFactura()
     {
         return $this->hasMany(DetalleFactura::class, 'factura_id');
     }
-    
 
+    public function carteraCliente()
+    {
+        return $this->hasOne(CarteraCliente::class, 'factura_id');
+    }
+    
+    public function vendedor()
+    {
+        return $this->belongsTo(Vendedor::class, 'vendedor_id');
+    }
+
+    public function pago()
+    {
+        return $this->belongsTo(Pago::class, 'pago_id');
+    }
 
 }

@@ -16,11 +16,9 @@ class DetalleFactura extends Model
         'factura_id',
         'producto_id',
         'cantidad_producto',
-        'descripcion_producto',
-        'valor_unitario',
-        'valor_total',
+        'precio_unitario', // Añadido
+        'subtotal', // Añadido
         'estado',
-        'registrado_por',
     ];
 
     public function factura()

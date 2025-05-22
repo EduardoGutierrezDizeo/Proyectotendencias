@@ -20,22 +20,22 @@ class Compra extends Model
     // Relación con proveedor
     public function proveedor()
     {
-        return $this->belongsTo(Proveedor::class);
+        return $this->belongsTo(Proveedor::class, 'proveedor_id');
     }
 
-    // Relación con el usuario que registró la compra
-    public function registradoPor()
+    // Relación con usuario (registrado_por)
+    public function usuario()
     {
         return $this->belongsTo(User::class, 'registrado_por');
     }
 
-    // (Más adelante) Relación con detalle_compra
-    public function detalles()
+    public function detallesCompra()
     {
-        return $this->hasMany(DetalleCompra::class);
+        return $this->hasMany(DetalleCompra::class, 'compra_id');
     }
-    public function detalleCompras()
-{
-    return $this->hasMany(DetalleCompra::class, 'compra_id');
-}
+
+    public function carteraProveedor()
+    {
+        return $this->hasOne(CarteraProveedor::class, 'compra_id');
+    }
 }

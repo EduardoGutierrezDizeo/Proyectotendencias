@@ -2,23 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\Compra;
-use App\Models\Proveedor;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CompraFactory extends Factory
 {
-    protected $model = Compra::class;
-
-    public function definition(): array
+    public function definition()
     {
         return [
-            'proveedor_id' => Proveedor::factory(),
-            'fecha_compra' => $this->faker->dateTimeBetween('-6 months', 'now'),
-            'total_compra' => $this->faker->randomFloat(2, 50000, 1000000),
+            'proveedor_id' => \App\Models\Proveedor::inRandomOrder()->first()->id,
+            'fecha_compra' => $this->faker->dateTimeThisYear,
+            'total_compra' => $this->faker->randomFloat(2, 100, 10000),
             'estado' => $this->faker->boolean(),
-            'registrado_por' => User::factory(),
+            'registrado_por' => \App\Models\User::inRandomOrder()->first()->id,
         ];
     }
 }

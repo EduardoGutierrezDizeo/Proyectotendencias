@@ -42,8 +42,6 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Nombre</th>
-                                        <th>Descripción</th>
-                                        <th>Categoría</th>
                                         <th>Precio de Venta</th>
                                         <th>Stock Actual</th>
                                         <th>Stock Mínimo</th>
@@ -56,11 +54,9 @@
                                     <tr>
                                         <td>{{ $producto->id }}</td>
                                         <td>{{ $producto->nombre }}</td>
-                                        <td>{{ $producto->descripcion }}</td>
-                                        <td>{{ $producto->categoria }}</td>
                                         <td>${{ number_format($producto->precio_venta, 2) }}</td>
-                                        <td>{{ $producto->stock }}</td>
-                                        <td>{{ $producto->stock_minimo }}</td>
+                                        <td>{{ $producto->stockActual }}</td>
+                                        <td>{{ $producto->stockMinimo }}</td>
                                         <td>
                                             <input data-type="producto" data-id="{{ $producto->id }}"
                                                    class="toggle-class" type="checkbox"

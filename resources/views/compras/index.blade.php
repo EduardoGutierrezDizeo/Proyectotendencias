@@ -81,35 +81,6 @@
                                         </td>
                                     </tr>
 
-                                    {{-- Fila adicional para mostrar el detalle de la compra --}}
-                                    <tr>
-                                        <td colspan="6">
-                                            <strong>Detalle de la Compra:</strong>
-                                            <table class="table table-sm table-bordered mt-2">
-                                                <thead class="bg-secondary text-white">
-                                                    <tr>
-                                                        <th>Producto</th>
-                                                        <th>Cantidad</th>
-                                                        <th>Descripción</th>
-                                                        <th>Valor Unitario</th>
-                                                        <th>Valor Total</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach($compra->detalleCompras as $detalle)
-                                                    <tr>
-                                                        <td>{{ $detalle->producto->nombre ?? 'N/A' }}</td>
-                                                        <td>{{ $detalle->cantidad_producto }}</td>
-                                                        <td>{{ $detalle->descripcion_producto }}</td>
-                                                        <td>${{ number_format($detalle->valor_unitario, 2) }}</td>
-                                                        <td>${{ number_format($detalle->valor_total, 2) }}</td>
-                                                    </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </td>
-                                    </tr>
-
                                     @endforeach
                                 </tbody>
                             </table>

@@ -17,7 +17,7 @@ class FacturaController extends Controller
    public function index()
 {
 
-     $facturas = Factura::with(['vendedor', 'detalleFacturas.producto'])->get();
+     $facturas = Factura::with(['vendedor', 'detallesFactura.producto'])->get();
     return view('facturas.index', compact('facturas'));
 }
 

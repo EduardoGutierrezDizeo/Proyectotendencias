@@ -18,7 +18,7 @@ class CompraController extends Controller
     public function index()
     {
         // Cargar compras con los detalles de cada una
-    $compras = Compra::with(['detalleCompras'])->get(); // Cargar detalles correctamente
+    $compras = Compra::with(['detallesCompra'])->get(); // Cargar detalles correctamente
 
     // Verificar que no esté vacío antes de pasar a la vista
     if ($compras->isEmpty()) {

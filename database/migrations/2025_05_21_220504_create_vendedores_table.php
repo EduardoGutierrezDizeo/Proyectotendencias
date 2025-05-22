@@ -6,27 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
         Schema::create('vendedores', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->string('telefono')->nullable();
-            $table->string('correo_electronico')->nullable();
-            $table->date('fecha_registro');
-            $table->boolean('estado');
-            $table->string('registrado_por');
+            $table->string('telefono');
+            $table->string('correo_electronico');
+            $table->dateTime('fecha_registro');
+            $table->boolean('estado')->default(true);
+            $table->foreignId('registrado_por')->constrained('users');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('vendedores');
     }

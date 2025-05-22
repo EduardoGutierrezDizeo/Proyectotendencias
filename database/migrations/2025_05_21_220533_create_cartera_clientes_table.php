@@ -6,22 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up(): void
+    public function up()
     {
         Schema::create('cartera_clientes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('cliente_id')->constrained('clientes')->onDelete('cascade');
-            $table->foreignId('factura_id')->constrained('facturas')->onDelete('cascade'); 
-            $table->decimal('saldo_pendiente', 10, 2);
-            $table->date('fecha_limite');
-            $table->boolean('estado');
+            $table->foreignId('factura_id')->constrained('facturas');
+            $table->decimal('totalCuentaPendiente', 10, 2);
+            $table->boolean('estado')->default(true);
             $table->timestamps();
         });
     }
 
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('cartera_clientes');
     }
 };
-

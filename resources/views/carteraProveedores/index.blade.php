@@ -35,7 +35,6 @@
                                 <thead style="background-color: #f5d76e; color: #000;">
                                     <tr>
                                         <th>ID</th>
-                                        <th>ID Proveedor</th>
                                         <th>ID Factura Compra</th>
                                         <th>Saldo Pendiente</th>
                                         <th>Estado</th>
@@ -46,7 +45,6 @@
                                     @foreach($cartera_proveedores as $cartera_proveedor)
                                     <tr>
                                         <td>{{ $cartera_proveedor->id }}</td>
-                                        <td>{{ $cartera_proveedor->proveedor_id }}</td>
                                         <td>{{ $cartera_proveedor->compra_id }}</td>
                                         <td>${{ number_format($cartera_proveedor->saldo_pendiente, 2) }}</td>
                                         <td>

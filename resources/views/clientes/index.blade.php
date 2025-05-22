@@ -50,9 +50,6 @@
                                             <th>Teléfono</th>
                                             <th>Dirección</th>
                                             <th>Correo</th>
-                                            <th>Negocio</th>
-                                            <th>Crédito</th>
-                                            <th>Deuda</th>
                                             <th>Estado</th>
                                             <th style="min-width: 120px;">Acciones</th>
                                         </tr>
@@ -65,9 +62,6 @@
                                             <td>{{ $cliente->telefono }}</td>
                                             <td>{{ $cliente->direccion }}</td>
                                             <td>{{ $cliente->correo_electronico }}</td>
-                                            <td>{{ $cliente->nombre_negocio }}</td>
-                                            <td>${{ number_format($cliente->credito_disponible, 2) }}</td>
-                                            <td>${{ number_format($cliente->deuda_actual, 2) }}</td>
                                              <td>
                                                 <input data-type="cliente" data-id="{{ $cliente->id }}"
                                                    class="toggle-class" type="checkbox"
