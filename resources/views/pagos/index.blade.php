@@ -42,7 +42,6 @@
                                         <th>ID Factura Venta</th>
                                         <th>Monto Pagado</th>
                                         <th>Fecha de Pago</th>
-                                        <th>Método de Pago</th>
                                         <th>Eliminar</th>
                                     </tr>
                                 </thead>
@@ -53,7 +52,6 @@
                                         <td>{{ $pago->factura_id }}</td>
                                         <td>${{ number_format($pago->monto_pago, 2) }}</td>
                                         <td>{{ $pago->fecha_pago }}</td>
-                                        <td>{{ $pago->metodo_pago }}</td>
                                         <td>
                                             <form class="delete-form" action="{{ route('pagos.destroy', $pago) }}" method="POST">
                                                 @csrf

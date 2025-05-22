@@ -35,10 +35,8 @@
                                 <thead style="background-color: #f5d76e; color: #000;">
                                     <tr>
                                         <th>ID</th>
-                                        <th>ID Cliente</th>
                                         <th>ID Factura Venta</th>
                                         <th>Saldo Pendiente</th>
-                                        <th>Fecha Límite</th>
                                         <th>Estado</th>
                                         <th>Eliminar</th>
                                     </tr>
@@ -47,10 +45,8 @@
                                     @foreach($cartera_clientes as $cartera_cliente)
                                     <tr>
                                         <td>{{ $cartera_cliente->id }}</td>
-                                        <td>{{ $cartera_cliente->cliente_id }}</td>
                                         <td>{{ $cartera_cliente->factura_id }}</td>
                                         <td>${{ number_format($cartera_cliente->saldo_pendiente, 2) }}</td>
-                                        <td>{{ $cartera_cliente->fecha_limite }}</td>
                                         <td>
                                             <input data-type="carteraCliente" data-id="{{ $cartera_cliente->id }}"
                                                    class="toggle-class" type="checkbox"
