@@ -1,112 +1,105 @@
 @extends('layouts.app')
 
-@section('title','Crear Producto')
-
 @section('content')
-<div class="content-wrapper">
-    <section class="content-header">
-		<div class="container-fluid">
-		</div>
-    </section>
-	@include('layouts.partial.msg')
-	<section class="content">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-md-12">
-					<div class="card">
-						<div class="card-header bg-secondary">
-							<h3>@yield('title')</h3>
-						</div>
-						<form method="POST" action="{{ route('productos.store') }}">
-							@csrf
-							<div class="card-body">
-								<div class="row">
-									<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-										<div class="form-group label-floating">
-											<label class="control-label">Nombre <strong style="color:red;">(*)</strong></label>
-											<input type="text" class="form-control" name="nombre" placeholder="Por ejemplo, Visibilidad" autocomplete="off" value="{{ old('nombre') }}">
-										</div>
-									</div>
-								</div>
-                                <div class="row">
-									<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-										<div class="form-group label-floating">
-											<label class="control-label">Descripcion <strong style="color:red;">(*)</strong></label>
-											<input type="text" class="form-control" name="descripcion" placeholder="Por ejemplo, Visibilidad" autocomplete="off" value="{{ old('descripcion') }}">
-										</div>
-									</div>
-								</div>
-                                <div class="row">
-									<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-										<div class="form-group label-floating">
-											<label class="control-label">precio compra <strong style="color:red;">(*)</strong></label>
-											<input type="text" class="form-control" name="precio_compra" placeholder="Por ejemplo, Visibilidad" autocomplete="off" value="{{ old('precio_compra') }}">
-										</div>
-									</div>
-                                    <div class="row">
-									<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-										<div class="form-group label-floating">
-											<label class="control-label">precio venta <strong style="color:red;">(*)</strong></label>
-											<input type="text" class="form-control" name="precio_venta" placeholder="Por ejemplo, Visibilidad" autocomplete="off" value="{{ old('precio_venta') }}">
-										</div>
-									</div>
-                                    <div class="row">
-									<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-										<div class="form-group label-floating">
-											<label class="control-label">stock<strong style="color:red;">(*)</strong></label>
-											<input type="text" class="form-control" name="stock" placeholder="Por ejemplo, Visibilidad" autocomplete="off" value="{{ old('stock') }}">
-										</div>
-									</div>
-                                    <div class="row">
-									<div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-										<div class="form-group label-floating">
-											<label class="control-label">categoria<strong style="color:red;">(*)</strong></label>
-											<input type="text" class="form-control" name="categoria" placeholder="Por ejemplo, Visibilidad" autocomplete="off" value="{{ old('categoria') }}">
-										</div>
-									</div>
-                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-										<div class="form-group label-floating">
-											<label class="control-label">proveedor_id<strong style="color:red;">(*)</strong></label>
-											<input type="text" class="form-control" name="proveedor_id" placeholder="Por ejemplo, Visibilidad" autocomplete="off" value="{{ old('proveedor_id') }}">
-										</div>
-									</div>
-                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-										<div class="form-group label-floating">
-											<label class="control-label">estado<strong style="color:red;">(*)</strong></label>
-											<input type="text" class="form-control" name="estado" placeholder="Por ejemplo, Visibilidad" autocomplete="off" value="{{ old('estado') }}">
-										</div>
-									</div>
-                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-										<div class="form-group label-floating">
-											<label class="control-label">registrado_por<strong style="color:red;">(*)</strong></label>
-											<input type="text" class="form-control" name="registrado_por" placeholder="Por ejemplo, Visibilidad" autocomplete="off" value="{{ old('registrado_por') }}">
-										</div>
-									</div>
-                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-										<div class="form-group label-floating">
-											<label class="control-label">stock_minimo<strong style="color:red;">(*)</strong></label>
-											<input type="text" class="form-control" name="stock_minimo" placeholder="Por ejemplo, Visibilidad" autocomplete="off" value="{{ old('stock_minimo') }}">
-										</div>
-									</div>
-								</div>
-								<input type="hidden" class="form-control" name="estado" value="1">
-								<input type="hidden" class="form-control" name="registrado_por" value="{{ Auth::user()->id }}">
-							</div>
-							<div class="card-footer">
-								<div class="row">
-									<div class="col-lg-2 col-xs-4">
-										<button type="submit" class="btn btn-primary btn-block btn-flat">Registrar</button>
-									</div>
-									<div class="col-lg-2 col-xs-4">
-										<a href="{{ route('productos.index') }}" class="btn btn-danger btn-block btn-flat">Atras</a>
-									</div>
-								</div>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
+<div class="d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+    <div class="container bg-white p-4 rounded shadow border" style="max-width: 500px;">
+        
+        {{-- Título centrado --}}
+        <h2 class="text-center text-danger mb-4">Registrar Producto</h2>
+
+        <form action="{{ route('productos.store') }}" method="POST">
+            @csrf
+
+            {{-- Nombre y Descripción en fila --}}
+            <div class="row mb-3">
+                <div class="col-6">
+                    <label class="form-label fw-bold">Nombre</label>
+                    <input type="text" name="nombre" class="form-control form-control-sm" value="{{ old('nombre') }}">
+                    @error('nombre') <div class="text-danger small">{{ $message }}</div> @enderror
+                </div>
+                <div class="col-6">
+                    <label class="form-label fw-bold">Descripción</label>
+                    <textarea name="descripcion" rows="2" class="form-control form-control-sm">{{ old('descripcion') }}</textarea>
+                    @error('descripcion') <div class="text-danger small">{{ $message }}</div> @enderror
+                </div>
+            </div>
+
+            {{-- Precio compra y venta --}}
+            <div class="row mb-3">
+                <div class="col">
+                    <label class="form-label fw-bold">Precio Compra</label>
+                    <input type="number" step="0.01" name="precio_compra" class="form-control form-control-sm" value="{{ old('precio_compra') }}">
+                    @error('precio_compra') <div class="text-danger small">{{ $message }}</div> @enderror
+                </div>
+                <div class="col">
+                    <label class="form-label fw-bold">Precio Venta</label>
+                    <input type="number" step="0.01" name="precio_venta" class="form-control form-control-sm" value="{{ old('precio_venta') }}">
+                    @error('precio_venta') <div class="text-danger small">{{ $message }}</div> @enderror
+                </div>
+            </div>
+
+            {{-- Stock y Estado --}}
+            <div class="row mb-3">
+                <div class="col-6">
+                    <label class="form-label fw-bold">Stock</label>
+                    <input type="number" name="stock" class="form-control form-control-sm" value="{{ old('stock') }}">
+                    @error('stock') <div class="text-danger small">{{ $message }}</div> @enderror
+                </div>
+                <div class="col-6">
+                    <label class="form-label fw-bold">Estado</label>
+                    <select name="estado" class="form-select form-select-sm">
+                        <option value="1" {{ old('estado') == '1' ? 'selected' : '' }}>Activo</option>
+                        <option value="0" {{ old('estado') == '0' ? 'selected' : '' }}>Inactivo</option>
+                    </select>
+                    @error('estado') <div class="text-danger small">{{ $message }}</div> @enderror
+                </div>
+            </div>
+
+            {{-- Categoría y Proveedor --}}
+            <div class="row mb-3">
+                <div class="col-6">
+                    <label class="form-label fw-bold">Categoría</label>
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text bg-white"><i class="bi bi-list-ul"></i></span>
+                        <select name="categoria" class="form-select">
+                            <option disabled selected>Seleccione una categoría</option>
+                            @foreach ($categorias as $categoria)
+                                <option value="{{ $categoria }}" {{ old('categoria') == $categoria ? 'selected' : '' }}>
+                                    {{ $categoria }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @error('categoria') <div class="text-danger small">{{ $message }}</div> @enderror
+                </div>
+
+                <div class="col-6">
+                    <label class="form-label fw-bold">Proveedor</label>
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text bg-white"><i class="bi bi-box-seam"></i></span>
+                        <select name="proveedor_id" class="form-select">
+                            <option disabled selected>Seleccione un proveedor</option>
+                            @foreach ($proveedores as $proveedor)
+                                <option value="{{ $proveedor->id }}" {{ old('proveedor_id') == $proveedor->id ? 'selected' : '' }}>
+                                    {{ $proveedor->nombre }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @error('proveedor_id') <div class="text-danger small">{{ $message }}</div> @enderror
+                </div>
+            </div>
+
+            {{-- Botones --}}
+            <div class="text-center mt-4">
+                <a href="{{ route('productos.index') }}" class="btn btn-outline-pink btn-sm me-2" style="background-color: #f8d7da; border-color: #f5c2c7; color: #842029;">
+                    <i class="bi bi-arrow-left-circle"></i> Atrás
+                </a>
+                <button type="submit" class="btn btn-danger btn-sm">
+                    <i class="bi bi-save"></i> Guardar Producto
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
 @endsection

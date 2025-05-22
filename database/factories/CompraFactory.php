@@ -17,7 +17,7 @@ class CompraFactory extends Factory
             'proveedor_id' => Proveedor::factory(),
             'fecha_compra' => $this->faker->dateTimeBetween('-6 months', 'now'),
             'total_compra' => $this->faker->randomFloat(2, 50000, 1000000),
-            'estado_pago' => $this->faker->boolean(),
+            'estado' => $this->faker->boolean(),
             'registrado_por' => User::factory(),
         ];
     }

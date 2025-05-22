@@ -23,20 +23,12 @@ class CarteraProveedoresController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        return view('carteraProveedores.create');
-    }
+   
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $cartera_proveedor = CarteraProveedor::create($request->all());
-        return redirect()->route('carteraProveedores.index')->with('siccessMag','El registro se guardo exitosamente');
-    }
-
+    
     /**
      * Display the specified resource.
      */
@@ -80,10 +72,10 @@ class CarteraProveedoresController extends Controller
         }
     }
 
-    public function cambioestadocarteraproveedor(Request $request)
-	{
-		$cartera_proveedor = CarteraProveedor::find($request->id);
-		$cartera_proveedor->estado=$request->estado;
-		$cartera_proveedor->save();
-	}
+    public function cambioestadocartera_proveedor(Request $request)
+    {
+        $cartera_proveedor = CarteraProveedor::find($request->id);
+        $cartera_proveedor->estado = $request->estado;
+        $cartera_proveedor->save();
+    }
 }

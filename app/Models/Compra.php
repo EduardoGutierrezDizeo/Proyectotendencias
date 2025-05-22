@@ -13,7 +13,7 @@ class Compra extends Model
         'proveedor_id',
         'fecha_compra',
         'total_compra',
-        'estado_pago',
+        'estado',
         'registrado_por',
     ];
 
@@ -34,4 +34,8 @@ class Compra extends Model
     {
         return $this->hasMany(DetalleCompra::class);
     }
+    public function detalleCompras()
+{
+    return $this->hasMany(DetalleCompra::class, 'compra_id');
+}
 }

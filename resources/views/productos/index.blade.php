@@ -2,62 +2,88 @@
 
 @section('content')
 <div class="content-wrapper">
-    <section class="content-header">
+    <section class="content-header text-center">
         <div class="container-fluid">
+            <h1 class="text-dark font-weight-bold">Productos</h1>
         </div>
     </section>
+
     @include('layouts.partial.msg')
+
     <section class="content">
         <div class="container-fluid">
+
+            <div class="row mb-3">
+                <div class="col-6 text-start">
+                    {{-- Botón salir al panel de control --}}
+                    <a href="{{ route('dashboard') }}" class="btn btn-secondary" title="Salir">
+                        <i class="fas fa-arrow-left"></i> Salir
+                    </a>
+                </div>
+                <div class="col-6 text-end">
+                    {{-- Botón nuevo producto --}}
+                    <a href="{{ route('productos.create') }}" class="btn btn-danger" title="Nuevo">
+                        <i class="fas fa-plus"></i> Nuevo Producto
+                    </a>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-12">
-                    <div class="card border-warning shadow-lg">
-                        <div class="card-header d-flex justify-content-between align-items-center"
-                             style="background-color: #000; color: #e61919; font-size: 1.75rem; font-weight: 600;">
-                            @yield('title')
-
-                            <a href="{{route('productos.create')}}" class="btn btn-danger" title="Nuevo">
-                                <i class="fas fa-plus nav-icon"></i>
-                            </a>
+                    <div class="card border-dark shadow-lg">
+                        <div class="card-header text-center"
+                             style="background-color: #000; color: #fff; font-size: 1.5rem; font-weight: 600;">
+                            Listado de Productos
                         </div>
-                        <div class="card-body bg-light">
-                            <table id="example1" class="table table-bordered text-center"
-                                   style="border-collapse: collapse; border: 1px solid #ccc;">
-                                <thead style="background-color: #f5d76e; color: #8b0000;">
+
+                        <div class="card-body bg-white">
+                            <table id="example1" class="table table-bordered text-center table-striped">
+                                <thead style="background-color: #f5d76e; color: #000;">
                                     <tr>
-                                        <th style="border: 1px solid #ccc;">ID</th>
-                                        <th style="border: 1px solid #ccc;">Nombre</th>
-                                        <th style="border: 1px solid #ccc;">Descripción</th>
-                                        <th style="border: 1px solid #ccc;">Categoria</th>
-                                        <th style="border: 1px solid #ccc;">Precio de Venta</th>
-                                        <th style="border: 1px solid #ccc;">Stock Actual</th>
-                                        <th style="border: 1px solid #ccc;">Stock Mínimo</th>
-                                        <th style="border: 1px solid #ccc;">Estado</th>
-                                        <th style="border: 1px solid #ccc;">Acciones</th>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Descripción</th>
+                                        <th>Categoría</th>
+                                        <th>Precio de Venta</th>
+                                        <th>Stock Actual</th>
+                                        <th>Stock Mínimo</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($productos as $producto)
                                     <tr>
-                                        <td style="border: 1px solid #ccc;">{{ $producto->id }}</td>
-                                        <td style="border: 1px solid #ccc;">{{ $producto->nombre }}</td>
-                                        <td style="border: 1px solid #ccc;">{{ $producto->descripcion }}</td>
-                                        <td style="border: 1px solid #ccc;">{{ $producto->categoria }}</td>
-                                        <td style="border: 1px solid #ccc;">{{ number_format($producto->precio_venta, 2) }}</td>
-                                        <td style="border: 1px solid #ccc;">{{ $producto->stock }}</td>
-                                        <td style="border: 1px solid #ccc;">{{ $producto->stock_minimo }}</td>
-                                        <td style="border: 1px solid #ccc;">
-
-                                        <input data-type="producto" data-id="{{$producto->id}}" class="toggle-class" type="checkbox" data-onstyle="success" data-offstyle="danger" 
-                                        data-toggle="toggle" data-on="Activo" data-off="Inactivo" {{ $producto->estado ? 'checked' : '' }}>
+                                        <td>{{ $producto->id }}</td>
+                                        <td>{{ $producto->nombre }}</td>
+                                        <td>{{ $producto->descripcion }}</td>
+                                        <td>{{ $producto->categoria }}</td>
+                                        <td>${{ number_format($producto->precio_venta, 2) }}</td>
+                                        <td>{{ $producto->stock }}</td>
+                                        <td>{{ $producto->stock_minimo }}</td>
                                         <td>
-                                        <form class="d-inline delete-form" action="{{ route('productos.destroy', $producto) }}"  method="POST">
-												@csrf
-												@method('DELETE')
-												<button type="submit" class="btn btn-danger btn-sm" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                                            <input data-type="producto" data-id="{{ $producto->id }}"
+                                                   class="toggle-class" type="checkbox"
+                                                   data-onstyle="success" data-offstyle="danger"
+                                                   data-toggle="toggle" data-on="Activo" data-off="Inactivo"
+                                                   {{ $producto->estado ? 'checked' : '' }}
+                                                   style="min-width: 100px;">
                                         </td>
+                                        <td>
+                                            <div class="d-flex justify-content-center gap-1">
+                                                <a href="{{ route('productos.edit', $producto) }}"
+                                                   class="btn btn-warning btn-sm" title="Editar">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <form class="delete-form" action="{{ route('productos.destroy', $producto) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </td>
-
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -69,6 +95,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </section>
 </div>

@@ -1,77 +1,88 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="content-wrapper">
-        <section class="content-header">
-            <div class="container-fluid">
+<div class="content-wrapper">
+    <section class="content-header text-center">
+        <div class="container-fluid">
+            <h1 class="text-dark font-weight-bold">Cartera de Clientes</h1>
+        </div>
+    </section>
+
+    @include('layouts.partial.msg')
+
+    <section class="content">
+        <div class="container-fluid">
+
+            <div class="row mb-3">
+                <div class="col-12 text-start">
+                    {{-- Botón salir al panel de control --}}
+                    <a href="{{ route('dashboard') }}" class="btn btn-secondary" title="Salir">
+                        <i class="fas fa-arrow-left"></i> Salir
+                    </a>
+                </div>
             </div>
-        </section>
-        @include('layouts.partial.msg')
-        <section class="content">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card border-warning shadow-lg">
-                            <div class="card-header d-flex justify-content-between align-items-center"
-                                style="background-color: #000; color: #e61919; font-size: 1.75rem; font-weight: 600;">
-                                @yield('title')
 
-                                <a href="{{route('carteraClientes.create')}}" class="btn btn-danger" title="Nuevo">
-                                    <i class="fas fa-plus nav-icon"></i>
-                                </a>
-                            </div>
-                            <div class="card-body bg-light">
-                                <table id="example1" class="table table-bordered text-center"
-                                    style="border-collapse: collapse; border: 1px solid #ccc;">
-                                    <thead style="background-color: #f5d76e; color: #8b0000;">
-                                        <tr>
-                                            <th style="border: 1px solid #ccc;">ID</th>
-                                            <th style="border: 1px solid #ccc;">ID de cliente</th>
-                                            <th style="border: 1px solid #ccc;">ID de factura de venta</th>
-                                            <th style="border: 1px solid #ccc;">Saldo pendiente</th>
-                                            <th style="border: 1px solid #ccc;">Fecha Limite</th>
-                                            <th style="border: 1px solid #ccc;">Estado</th>
-                                            <th style="border: 1px solid #ccc;">Eliminar</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($cartera_clientes as $cartera_cliente)
-                                            <tr>
-                                                <td style="border: 1px solid #ccc;">{{ $cartera_cliente->id }}</td>
-                                                <td style="border: 1px solid #ccc;">{{ $cartera_cliente->cliente_id }}</td>
-                                                <td style="border: 1px solid #ccc;">{{ $cartera_cliente->factura_id }}</td>
-                                                <td style="border: 1px solid #ccc;">{{ $cartera_cliente->saldo_pendiente }}</td>
-                                                <td style="border: 1px solid #ccc;">{{ $cartera_cliente->fecha_limite }}</td>
-                                                <td style="border: 1px solid #ccc;">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card border-dark shadow-lg">
+                        <div class="card-header text-center"
+                             style="background-color: #000; color: #fff; font-size: 1.5rem; font-weight: 600;">
+                            Listado de Cartera de Clientes
+                        </div>
 
-                                                    <input data-type="carteraCliente" data-id="{{$cartera_cliente->id}}"
-                                                        class="toggle-class" type="checkbox" data-onstyle="success"
-                                                        data-offstyle="danger" data-toggle="toggle" data-on="Activo"
-                                                        data-off="Inactivo" {{ $cartera_cliente->estado ? 'checked' : '' }}>
-                                                </td>
+                        <div class="card-body bg-white">
+                            <table id="example1" class="table table-bordered text-center table-striped">
+                                <thead style="background-color: #f5d76e; color: #000;">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>ID Cliente</th>
+                                        <th>ID Factura Venta</th>
+                                        <th>Saldo Pendiente</th>
+                                        <th>Fecha Límite</th>
+                                        <th>Estado</th>
+                                        <th>Eliminar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($cartera_clientes as $cartera_cliente)
+                                    <tr>
+                                        <td>{{ $cartera_cliente->id }}</td>
+                                        <td>{{ $cartera_cliente->cliente_id }}</td>
+                                        <td>{{ $cartera_cliente->factura_id }}</td>
+                                        <td>${{ number_format($cartera_cliente->saldo_pendiente, 2) }}</td>
+                                        <td>{{ $cartera_cliente->fecha_limite }}</td>
+                                        <td>
+                                            <input data-type="carteraCliente" data-id="{{ $cartera_cliente->id }}"
+                                                   class="toggle-class" type="checkbox"
+                                                   data-onstyle="success" data-offstyle="danger"
+                                                   data-toggle="toggle" data-on="Activo" data-off="Inactivo"
+                                                   {{ $cartera_cliente->estado ? 'checked' : '' }}
+                                                   style="min-width: 100px;">
+                                        </td>
+                                        <td>
+                                            <form class="delete-form"
+                                                  action="{{ route('carteraClientes.destroy', $cartera_cliente) }}"
+                                                  method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
 
-                                                <td style="border: 1px solid #ccc;"> <!-- Cierre faltante estaba aquí -->
-                                                    <form class="d-inline delete-form"
-                                                        action="{{ route('carteraClientes.destroy', $cartera_cliente) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger btn-sm" title="Eliminar"><i
-                                                                class="fas fa-trash-alt"></i></button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-
-                                {{-- Paginación opcional --}}
-                                {{-- {{ $productos->links() }} --}}
-                            </div>
+                            {{-- Paginación opcional --}}
+                            {{-- {{ $cartera_clientes->links() }} --}}
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
+
+        </div>
+    </section>
+</div>
 @endsection

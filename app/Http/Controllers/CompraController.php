@@ -2,79 +2,98 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Compra;
-use App\Models\Proveedor;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Compra;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Database\QueryException;
+use Exception;
 
 class CompraController extends Controller
 {
-    // Mostrar todas las compras
+
+    /**
+     * Display a listing of the resource.
+     */
+
     public function index()
     {
-        $compras = Compra::with('proveedor')->get();
-        return view('compras.index', compact('compras'));
+        // Cargar compras con los detalles de cada una
+    $compras = Compra::with(['detalleCompras'])->get(); // Cargar detalles correctamente
+
+    // Verificar que no esté vacío antes de pasar a la vista
+    if ($compras->isEmpty()) {
+        Log::error('No se encontraron compras.');
     }
 
-    // Mostrar el formulario para crear una nueva compra
+    return view('compras.index', compact('compras'));
+    }
+
+
+
+
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
-        $proveedores = Proveedor::all();
-        return view('compras.create', compact('proveedores'));
+        //
     }
 
-    // Guardar una nueva compra
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
-        $request->validate([
-            'proveedor_id' => 'required|exists:proveedores,id',
-            'fecha_compra' => 'required|date',
-            'total_compra' => 'required|numeric',
-            'estado_pago' => 'required|string|max:255',
-        ]);
-
-        Compra::create([
-            'proveedor_id' => $request->proveedor_id,
-            'fecha_compra' => $request->fecha_compra,
-            'total_compra' => $request->total_compra,
-            'estado_pago' => $request->estado_pago,
-            'registrado_por' => Auth::id(),
-        ]);
-
-        return redirect()->route('compras.index')->with('success', 'Compra registrada con éxito');
+        //
     }
 
-    // Mostrar formulario para editar una compra
-    public function edit(Compra $compra)
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
     {
-        $proveedores = Proveedor::all();
-        return view('compras.edit', compact('compra', 'proveedores'));
+        //
     }
 
-    // Actualizar la compra
-    public function update(Request $request, Compra $compra)
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
     {
-        $request->validate([
-            'proveedor_id' => 'required|exists:proveedores,id',
-            'fecha_compra' => 'required|date',
-            'total_compra' => 'required|numeric',
-            'estado_pago' => 'required|string|max:255',
-        ]);
-
-        $compra->update([
-            'proveedor_id' => $request->proveedor_id,
-            'fecha_compra' => $request->fecha_compra,
-            'total_compra' => $request->total_compra,
-            'estado_pago' => $request->estado_pago,
-        ]);
-
-        return redirect()->route('compras.index')->with('success', 'Compra actualizada con éxito');
+        //
     }
 
-    // Eliminar una compra
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy(Compra $compra)
     {
-        $compra->delete();
-        return redirect()->route('compras.index')->with('success', 'Compra eliminada con éxito');
+        try {
+            $compra->delete();
+            return redirect()->route('compras.index')->with('successMsg', 'El registro se eliminó exitosamente');
+        } catch (QueryException $e) {
+            // Capturar y manejar violaciones de restricción de clave foránea
+            Log::error('Error al eliminar el país: ' . $e->getMessage());
+            return redirect()->route('compras.index')->withErrors('El registro que desea eliminar tiene información relacionada. Comuníquese con el Administrador');
+        } catch (Exception $e) {
+            // Capturar y manejar cualquier otra excepción
+            Log::error('Error inesperado al eliminar el país: ' . $e->getMessage());
+            return redirect()->route('compras.index')->withErrors('Ocurrió un error inesperado al eliminar el registro. Comuníquese con el Administrador');
+        }
+    }
+
+    public function cambioestadocompra(Request $request)
+    {
+        $compra = Compra::find($request->id);
+        $compra->estado = $request->estado;
+        $compra->save();
     }
 }

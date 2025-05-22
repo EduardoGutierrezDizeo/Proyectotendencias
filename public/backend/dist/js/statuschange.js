@@ -14,6 +14,25 @@ $(document).ready(function() {
             case 'producto':
                 url = 'cambioestadoproducto'; // URL para productos
                 break;
+            case 'cliente':
+                url = 'cambioestadocliente'; 
+                break;
+            case 'proveedor':
+                url = 'cambioestadoproveedor'; // URL para proveedores
+                break; 
+             case 'factura':
+                url = 'cambioestadofactura'; 
+                break;  
+            case 'compra':
+                url = 'cambioestadocompra'; 
+                break;    
+            case 'carteraproveedor':
+                url = 'cambioestadocarteraproveedor'; 
+                break;     
+            case 'carteracliente':
+                url = 'cambioestadocarteracliente'; 
+                break;
+           
             default:
                 return; // Salir de la función si el tipo de elemento no es válido
         }

@@ -2,72 +2,125 @@
 
 @section('content')
 <div class="content-wrapper">
-    <section class="content-header">
+    <section class="content-header text-center">
         <div class="container-fluid">
-            <h1 class="m-0" style="color:  #1d1d1d;">Compras Realizadas</h1>
+            <h1 class="text-dark font-weight-bold">Compras</h1>
         </div>
     </section>
 
     @include('layouts.partial.msg')
-    
+
     <section class="content">
         <div class="container-fluid">
+
+            <div class="row mb-3">
+                <div class="col-6 text-start">
+                    {{-- Botón salir al panel de control --}}
+                    <a href="{{ route('dashboard') }}" class="btn btn-secondary" title="Salir">
+                        <i class="fas fa-arrow-left"></i> Salir
+                    </a>
+                </div>
+                <div class="col-6 text-end">
+                    {{-- Botón nueva compra --}}
+                    <a href="{{ route('compras.create') }}" class="btn btn-danger" title="Nueva Compra">
+                        <i class="fas fa-plus"></i> Nueva Compra
+                    </a>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-12">
-                    <div class="card shadow-lg" style="background-color: #1d1d1d; color: #f1f1f1;">
-                        <div class="card-header d-flex justify-content-between align-items-center"
-                             style="background-color: #9b59b6; color: white;">
-                            <h3 class="card-title" style="font-size: 1.75rem; font-weight: 600;">Lista de Compras</h3>
-                            <a href="{{ route('compras.create') }}" class="btn btn-light" title="Nueva Compra">
-                                <i class="fas fa-plus nav-icon" style="color: #9b59b6;"></i> Nueva Compra
-                            </a>
+                    <div class="card border-dark shadow-lg">
+                        <div class="card-header text-center"
+                             style="background-color: #000; color: #fff; font-size: 1.5rem; font-weight: 600;">
+                            Listado de Compras
                         </div>
 
-                        <div class="card-body bg-dark">
-                            <table id="example1" class="table table-bordered text-center"
-                                   style="border-collapse: collapse; border: 1px solid #ccc; color: white;">
-                                <thead style="background-color: #9b59b6; color: white;">
+                        <div class="card-body bg-white">
+                            <table id="example1" class="table table-bordered text-center table-striped">
+                                <thead style="background-color: #f5d76e; color: #000;">
                                     <tr>
-                                        <th style="border: 1px solid #ccc;">ID</th>
-                                        <th style="border: 1px solid #ccc;">Proveedor</th>
-                                        <th style="border: 1px solid #ccc;">Fecha de Compra</th>
-                                        <th style="border: 1px solid #ccc;">Total Compra</th>
-                                        <th style="border: 1px solid #ccc;">Estado de Pago</th>
-                                        <th style="border: 1px solid #ccc;">Acciones</th>
+                                        <th>ID</th>
+                                        <th>Proveedor</th>
+                                        <th>Fecha de Compra</th>
+                                        <th>Total Compra</th>
+                                        <th>Estado de Pago</th>
+                                        <th>Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody style="background-color: #2c2c2c;">
+                                <tbody>
                                     @foreach($compras as $compra)
                                     <tr>
-                                        <td style="border: 1px solid #ccc;">{{ $compra->id }}</td>
-                                        <td style="border: 1px solid #ccc;">{{ $compra->proveedor->nombre }}</td>
-                                        <td style="border: 1px solid #ccc;">{{ $compra->fecha_compra }}</td>
-                                        <td style="border: 1px solid #ccc;">{{ number_format($compra->total_compra, 2) }}</td>
-                                        <td style="border: 1px solid #ccc;">
-                                            <span class="badge {{ $compra->estado_pago == 'pendiente' ? 'bg-warning' : ($compra->estado_pago == 'pagado' ? 'bg-success' : 'bg-danger') }}">
-                                                {{ ucfirst($compra->estado_pago) }}
-                                            </span>
+                                        <td>{{ $compra->id }}</td>
+                                        <td>{{ $compra->proveedor->nombre }}</td>
+                                        <td>{{ $compra->fecha_compra }}</td>
+                                        <td>${{ number_format($compra->total_compra, 2) }}</td>
+                                        <td>
+                                            <input data-type="compra" data-id="{{ $compra->id }}"
+                                                   class="toggle-class" type="checkbox"
+                                                   data-onstyle="success" data-offstyle="danger"
+                                                   data-toggle="toggle" data-on="Pagado" data-off="Pendiente"
+                                                   {{ $compra->estado ? 'checked' : '' }}
+                                                   style="min-width: 100px;">
                                         </td>
-                                        <td style="border: 1px solid #ccc;">
-                                            <a href="{{ route('compras.edit', $compra->id) }}" class="btn btn-info btn-sm" title="Editar">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <form action="{{ route('compras.destroy', $compra->id) }}" method="POST" class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
-                                                    <i class="fas fa-trash-alt"></i>
-                                                </button>
-                                            </form>
+                                        <td>
+                                            <div class="d-flex justify-content-center gap-1">
+                                                <a href="{{ route('compras.edit', $compra) }}"
+                                                   class="btn btn-warning btn-sm" title="Editar">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                {{-- Puedes agregar botón ver detalles si tienes ruta --}}
+                                                <form class="delete-form" action="{{ route('compras.destroy', $compra) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
+
+                                    {{-- Fila adicional para mostrar el detalle de la compra --}}
+                                    <tr>
+                                        <td colspan="6">
+                                            <strong>Detalle de la Compra:</strong>
+                                            <table class="table table-sm table-bordered mt-2">
+                                                <thead class="bg-secondary text-white">
+                                                    <tr>
+                                                        <th>Producto</th>
+                                                        <th>Cantidad</th>
+                                                        <th>Descripción</th>
+                                                        <th>Valor Unitario</th>
+                                                        <th>Valor Total</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($compra->detalleCompras as $detalle)
+                                                    <tr>
+                                                        <td>{{ $detalle->producto->nombre ?? 'N/A' }}</td>
+                                                        <td>{{ $detalle->cantidad_producto }}</td>
+                                                        <td>{{ $detalle->descripcion_producto }}</td>
+                                                        <td>${{ number_format($detalle->valor_unitario, 2) }}</td>
+                                                        <td>${{ number_format($detalle->valor_total, 2) }}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+
                                     @endforeach
                                 </tbody>
                             </table>
+
+                            {{-- Paginación opcional --}}
+                            {{-- {{ $compras->links() }} --}}
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </section>
 </div>
