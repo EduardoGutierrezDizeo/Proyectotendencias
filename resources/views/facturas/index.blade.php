@@ -41,11 +41,9 @@
                                 <thead style="background-color: #f5d76e; color: #000;">
                                     <tr>
                                         <th>ID</th>
-                                        <th>Nombre Cliente</th>
-                                        <th>NIT Cliente</th>
+                                        <th>ID Cliente</th>
                                         <th>Fecha Venta</th>
                                         <th>Total Factura</th>
-                                        <th>Vendedor</th>
                                         <th>Estado</th>
                                         <th>Acciones</th>
                                     </tr>
@@ -54,11 +52,9 @@
                                     @foreach($facturas as $factura)
                                     <tr>
                                         <td>{{ $factura->id }}</td>
-                                        <td>{{ $factura->nombre_cliente }}</td>
-                                        <td>{{ $factura->nit_cliente }}</td>
-                                        <td>{{ $factura->fecha_venta }}</td>
-                                        <td>${{ number_format($factura->total_factura, 2) }}</td>
-                                        <td>{{ $factura->vendedor->nombre }}</td>
+                                        <td>{{ $factura->cliente_id }}</td>
+                                        <td>{{ $factura->fecha }}</td>
+                                        <td>${{ number_format($factura->total, 2) }}</td>
                                         <td>
                                             <input data-type="factura" data-id="{{ $factura->id }}"
                                                    class="toggle-class" type="checkbox"
