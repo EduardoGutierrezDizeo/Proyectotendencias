@@ -13,16 +13,13 @@ class CarteraProveedor extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'proveedor_id',
-        'cuenta_por_pagar',
-        'abonos',
-        'estado_cuenta',
+        'compra_id', 
+        'totalCuentaPendiente',
         'estado',
-        'registrado_por',
     ];
 
-    public function proveedor()
+    public function compra()
     {
-        return $this->belongsTo(Proveedor::class);
+        return $this->belongsTo(Compra::class, 'compra_id');
     }
 }

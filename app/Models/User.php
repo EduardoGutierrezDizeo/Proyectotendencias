@@ -46,9 +46,29 @@ class User extends Authenticatable
         ];
     }
 
-    public function pagosRegistrados()
-    {   
-    return $this->hasMany(Pago::class, 'registrado_por');
+    public function compras()
+    {
+        return $this->hasMany(Compra::class, 'registrado_por');
+    }
+
+    public function facturas()
+    {
+        return $this->hasMany(Factura::class, 'registrado_por');
+    }
+
+    public function clientesRegistrados()
+    {
+        return $this->hasMany(Cliente::class, 'registrado_por');
+    }
+
+    public function proveedoresRegistrados()
+    {
+        return $this->hasMany(Proveedor::class, 'registrado_por');
+    }
+
+    public function productosRegistrados()
+    {
+        return $this->hasMany(Producto::class, 'registrado_por');
     }
 
 }

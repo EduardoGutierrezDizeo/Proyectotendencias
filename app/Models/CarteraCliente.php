@@ -13,16 +13,13 @@ class CarteraCliente extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'cliente_id',
-        'deuda_total',
-        'abonos',
-        'estado_deuda',
+        'factura_id',
+        'totalCuentaPendiente',
         'estado',
-        'registrado_por',
     ];
 
-    public function cliente()
+    public function factura()
     {
-        return $this->belongsTo(Cliente::class);
+        return $this->belongsTo(Factura::class, 'factura_id');
     }
 }

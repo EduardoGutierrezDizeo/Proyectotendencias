@@ -2,24 +2,16 @@
 
 namespace Database\Factories;
 
-use App\Models\CarteraCliente;
-use App\Models\Cliente;
-use App\Models\Factura;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CarteraClienteFactory extends Factory
 {
-    protected $model = CarteraCliente::class;
-
-    public function definition(): array
+    public function definition()
     {
         return [
-            'cliente_id' => Cliente::inRandomOrder()->first()?->id ?? Cliente::factory(),
-            'factura_id' => Factura::inRandomOrder()->first()?->id ?? Factura::factory(),
-            'saldo_pendiente' => $this->faker->randomFloat(2, 10000, 100000),
-            'fecha_limite' => $this->faker->dateTimeBetween('now', '+2 months'),
+            'factura_id' => \App\Models\Factura::inRandomOrder()->first()->id,
+            'totalCuentaPendiente' => $this->faker->randomFloat(2, 100, 5000),
             'estado' => $this->faker->boolean(),
         ];
     }
 }
-

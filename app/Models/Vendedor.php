@@ -21,8 +21,17 @@ class Vendedor extends Model
         'registrado_por',
     ];
 
+    protected $casts = [
+        'fecha_registro' => 'datetime',
+    ];
+
     public function facturas()
     {
         return $this->hasMany(Factura::class);
+    }
+
+    public function registradoPor()
+    {
+        return $this->belongsTo(User::class, 'registrado_por');
     }
 }

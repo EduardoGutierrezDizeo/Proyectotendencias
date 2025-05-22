@@ -26,8 +26,8 @@ class Proveedor extends Model
         return $this->hasMany(Producto::class);
     }
 
-    public function carteraProveedor()
+    public function facturasCompra()
     {
-        return $this->hasOne(CarteraProveedor::class);
+        return $this->hasMany(Compra::class, 'proveedor_id');
     }
 }
