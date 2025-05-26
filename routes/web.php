@@ -27,7 +27,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('proveedores', ProveedorController::class);
     Route::resource('facturas', FacturaController::class); 
     Route::resource('compras', CompraController::class);
-    Route::resource('carteraProveedores', CarteraProveedoresController::class);
+    Route::resource('carteraProveedores', CarteraProveedoresController::class)->parameters([
+        'carteraProveedores' => 'carteraProveedor']);
     Route::resource('carteraClientes', CarteraClientesController::class);
     Route::resource('pagos', PagosController::class);
     
