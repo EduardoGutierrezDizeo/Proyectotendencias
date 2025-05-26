@@ -41,7 +41,7 @@
                                 <thead style="background-color: #f5d76e; color: #000;">
                                     <tr>
                                         <th>ID</th>
-                                        <th>ID Cliente</th>
+                                        <th>Cliente</th>
                                         <th>Fecha Venta</th>
                                         <th>Total Factura</th>
                                         <th>Estado</th>
@@ -52,7 +52,7 @@
                                     @foreach($facturas as $factura)
                                     <tr>
                                         <td>{{ $factura->id }}</td>
-                                        <td>{{ $factura->cliente_id }}</td>
+                                        <td>{{ $factura->cliente->nombre }}</td>
                                         <td>{{ $factura->fecha }}</td>
                                         <td>${{ number_format($factura->total, 2) }}</td>
                                         <td>
@@ -73,6 +73,8 @@
                                                    class="btn btn-info btn-sm" title="Ver Detalles">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
+                                                {{-- Botón PDF --}}
+                                                <a href="{{ route('factura.pdf',$factura->id) }}" class="btn btn-success btn-sm" title="Imprimir Formato" target="_blank"><i class="fas fa-print"></i></a>
                                                 <form class="delete-form" action="{{ route('facturas.destroy', $factura) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')

@@ -15,7 +15,7 @@ class ProductoFactory extends Factory
             'precio_compra' => $this->faker->randomFloat(2, 1, 100),
             'precio_venta' => $this->faker->randomFloat(2, 1.5, 150),
             'stockActual' => $this->faker->numberBetween(0, 500),
-            'stockMinimo' => $this->faker->numberBetween(5, 50),
+            'stockMinimo' => 10,
             'estado' => $this->faker->boolean(),
             'registrado_por' => \App\Models\User::inRandomOrder()->first()->id,
         ];
