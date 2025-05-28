@@ -17,14 +17,9 @@ class ProductoController extends Controller
      */
     public function create()
     {
-        // Obtener todos los proveedores
-        $proveedores = Proveedor::all();
-
-        // Definir las categorías como un array en el controlador
-        $categorias = ['Comida', 'Bebidas', 'Enlatados'];  // Ejemplo de categorías
-
-        // Pasar las categorías y proveedores a la vista
-        return view('productos.create', compact('proveedores', 'categorias'));
+        $productos = Producto::where('estado', '=', '1')->orderBy('nombre')->get();
+        $proveedores = Proveedor::where('estado', '=', '1')->orderBy('nombre')->get();
+        return view('productos.create', compact('productos', 'proveedores'));
     }
 
     /**

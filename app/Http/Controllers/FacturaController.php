@@ -9,6 +9,7 @@ use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\QueryException;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
 
 class FacturaController extends Controller
@@ -111,4 +112,14 @@ class FacturaController extends Controller
     {
         return "Vista de factura aún no disponible.";
     }
+
+    public function generatePDF($id)
+    {
+        $factura = Factura::with('cliente', 'detallesFactura')->findOrFail($id);
+
+        $pdf = PDF::loadView('factura.facturaPdf', compact('factura'))->setPaper('letter');
+		
+		return $pdf->stream('factura_' . $factura->id . '.pdf');
+    }
+
 }

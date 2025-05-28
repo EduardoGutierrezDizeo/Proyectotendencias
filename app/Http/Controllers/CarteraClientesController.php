@@ -64,10 +64,10 @@ class CarteraClientesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CarteraCliente $cartera_cliente)
+    public function destroy(CarteraCliente $carteraCliente)
     {
         try {
-            $cartera_cliente->delete();
+            $carteraCliente->delete();
             return redirect()->route('carteraClientes.index')->with('successMsg', 'El registro se eliminó exitosamente');
         } catch (QueryException $e) {
             // Capturar y manejar violaciones de restricción de clave foránea

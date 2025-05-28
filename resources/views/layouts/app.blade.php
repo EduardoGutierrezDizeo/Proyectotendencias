@@ -38,6 +38,10 @@
     <!-- Toggle -->
     <link rel="stylesheet" href="{{ asset('backend/dist/css/toggle.css') }}">
 
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{ asset('backend/plugins/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+
     <!-- Scripts compilados con Vite -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
@@ -90,5 +94,9 @@
 
     <!-- SweetAlert2 -->
     <script src="{{ asset('backend/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+
+    <!-- Select2 -->
+    <script src="{{ asset('backend/dist/js/select2.js') }}"></script>
+    <script src="{{ asset('backend/dist/js/selectors.js') }}"></script>
 </body>
 </html>

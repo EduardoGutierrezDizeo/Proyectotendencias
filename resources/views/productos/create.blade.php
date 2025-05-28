@@ -10,7 +10,7 @@
         <form action="{{ route('productos.store') }}" method="POST">
             @csrf
 
-            {{-- Nombre y Descripción en fila --}}
+            {{-- Nombre y Proveedor en fila --}}
             <div class="row mb-3">
                 <div class="col-6">
                     <label class="form-label fw-bold">Nombre</label>
@@ -18,9 +18,16 @@
                     @error('nombre') <div class="text-danger small">{{ $message }}</div> @enderror
                 </div>
                 <div class="col-6">
-                    <label class="form-label fw-bold">Descripción</label>
-                    <textarea name="descripcion" rows="2" class="form-control form-control-sm">{{ old('descripcion') }}</textarea>
-                    @error('descripcion') <div class="text-danger small">{{ $message }}</div> @enderror
+                    <label class="form-label fw-bold">Proveedor</label>
+                    <div class="input-group input-group-sm">
+                        <select class="form-control select2" name="proveedor_id" id="select-proveedor">
+							<option value="">Seleccione un proveedor</option>
+							@foreach($proveedores as $proveedor)
+								<option value="{{ $proveedor->id }}">{{ $proveedor->nombre }}</option>
+							@endforeach
+						</select>
+                    </div>
+                    @error('proveedor_id') <div class="text-danger small">{{ $message }}</div> @enderror
                 </div>
             </div>
 
@@ -52,41 +59,6 @@
                         <option value="0" {{ old('estado') == '0' ? 'selected' : '' }}>Inactivo</option>
                     </select>
                     @error('estado') <div class="text-danger small">{{ $message }}</div> @enderror
-                </div>
-            </div>
-
-            {{-- Categoría y Proveedor --}}
-            <div class="row mb-3">
-                <div class="col-6">
-                    <label class="form-label fw-bold">Categoría</label>
-                    <div class="input-group input-group-sm">
-                        <span class="input-group-text bg-white"><i class="bi bi-list-ul"></i></span>
-                        <select name="categoria" class="form-select">
-                            <option disabled selected>Seleccione una categoría</option>
-                            @foreach ($categorias as $categoria)
-                                <option value="{{ $categoria }}" {{ old('categoria') == $categoria ? 'selected' : '' }}>
-                                    {{ $categoria }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    @error('categoria') <div class="text-danger small">{{ $message }}</div> @enderror
-                </div>
-
-                <div class="col-6">
-                    <label class="form-label fw-bold">Proveedor</label>
-                    <div class="input-group input-group-sm">
-                        <span class="input-group-text bg-white"><i class="bi bi-box-seam"></i></span>
-                        <select name="proveedor_id" class="form-select">
-                            <option disabled selected>Seleccione un proveedor</option>
-                            @foreach ($proveedores as $proveedor)
-                                <option value="{{ $proveedor->id }}" {{ old('proveedor_id') == $proveedor->id ? 'selected' : '' }}>
-                                    {{ $proveedor->nombre }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    @error('proveedor_id') <div class="text-danger small">{{ $message }}</div> @enderror
                 </div>
             </div>
 

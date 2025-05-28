@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('cartera_clientes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('factura_id')->constrained('facturas');
-            $table->decimal('totalCuentaPendiente', 10, 2);
+            $table->decimal('saldo_pendiente', 10, 2);
             $table->boolean('estado')->default(true);
             $table->timestamps();
         });

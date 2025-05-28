@@ -31,6 +31,12 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('ripazha02'),
         ]);
 
+        User::create([
+            'name' => 'Luisa Fernanda Ovallos',
+            'email' => 'lfovallosc@ufpso.edu.co',
+            'password' => bcrypt('02062024'),
+        ]);
+
         // Crear datos de prueba
         User::factory(5)->create();
         Cliente::factory(20)->create();
