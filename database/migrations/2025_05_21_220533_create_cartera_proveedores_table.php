@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('cartera_proveedores', function (Blueprint $table) {
             $table->id();
             $table->foreignId('compra_id')->constrained('compras');
-            $table->decimal('totalCuentaPendiente', 10, 2);
+            $table->decimal('saldo_pendiente', 10, 2);
             $table->boolean('estado')->default(true);
             $table->timestamps();
         });

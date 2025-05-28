@@ -14,7 +14,7 @@ class CarteraCliente extends Model
 
     protected $fillable = [
         'factura_id',
-        'totalCuentaPendiente',
+        'saldo_pendiente',
         'estado',
     ];
 

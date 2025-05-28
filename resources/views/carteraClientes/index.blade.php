@@ -48,7 +48,7 @@
                                         <td>{{ $cartera_cliente->factura_id }}</td>
                                         <td>${{ number_format($cartera_cliente->saldo_pendiente, 2) }}</td>
                                         <td>
-                                            <input data-type="carteraCliente" data-id="{{ $cartera_cliente->id }}"
+                                            <input data-type="carteracliente" data-id="{{ $cartera_cliente->id }}"
                                                    class="toggle-class" type="checkbox"
                                                    data-onstyle="success" data-offstyle="danger"
                                                    data-toggle="toggle" data-on="Activo" data-off="Inactivo"

@@ -10,7 +10,7 @@ class CarteraClienteFactory extends Factory
     {
         return [
             'factura_id' => \App\Models\Factura::inRandomOrder()->first()->id,
-            'totalCuentaPendiente' => $this->faker->randomFloat(2, 100, 5000),
+            'saldo_pendiente' => $this->faker->randomFloat(2, 100, 5000),
             'estado' => $this->faker->boolean(),
         ];
     }

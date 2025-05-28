@@ -14,7 +14,7 @@ class CarteraProveedor extends Model
 
     protected $fillable = [
         'compra_id', 
-        'totalCuentaPendiente',
+        'saldo_pendiente',
         'estado',
     ];
 
