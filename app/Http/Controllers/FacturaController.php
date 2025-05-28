@@ -9,12 +9,10 @@ use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\QueryException;
-
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 use Carbon\Carbon;
-
 use Exception;
 
 class FacturaController extends Controller
@@ -154,12 +152,5 @@ class FacturaController extends Controller
         $pdf = Pdf::loadView('facturas.pdf', compact('factura'))->setPaper('letter');
 
         return $pdf->stream('factura_' . $factura->id . '.pdf');
-    }
-
-        $factura = Factura::with('cliente', 'detallesFactura')->findOrFail($id);
-
-        $pdf = PDF::loadView('factura.facturaPdf', compact('factura'))->setPaper('letter');
-		
-		return $pdf->stream('factura_' . $factura->id . '.pdf');
     }
 }

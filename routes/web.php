@@ -34,8 +34,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('pagos', PagosController::class);
 
 
+    
     Route::get('facturas/pdf/{id}', [FacturaController::class, 'generatePDF'])->name('facturas.pdf');
-
     Route::get('cambioestadoproducto', [ProductoController::class, 'cambioestadoproducto'])->name('cambioestadoproducto');
     Route::get('cambioestadocliente', [ClienteController::class, 'cambioestadocliente'])->name('cambioestadocliente');
     Route::get('cambioestadoproveedor', [ProveedorController::class, 'cambioestadoproveedor'])->name('cambioestadoproveedor');

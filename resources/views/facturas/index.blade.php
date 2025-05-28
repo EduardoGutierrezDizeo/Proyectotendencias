@@ -75,7 +75,7 @@
                                                     <i class="fas fa-eye"></i>
                                                 </a>
                                                 {{-- Botón PDF --}}
-                                                <a href="{{ route('factura.pdf',$factura->id) }}" class="btn btn-success btn-sm" title="Imprimir Formato" target="_blank"><i class="fas fa-print"></i></a>
+                                                <a href="{{ route('facturas.pdf', $factura->id) }}" class="btn btn-success btn-sm" title="Imprimir Formato" target="_blank"><i class="fas fa-print"></i></a>
                                                 <form class="delete-form" action="{{ route('facturas.destroy', $factura) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
