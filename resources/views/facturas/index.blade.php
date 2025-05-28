@@ -65,16 +65,17 @@
                                         </td>
                                         <td>
                                             <div class="d-flex justify-content-center gap-1">
-                                                <a href="{{ route('facturas.edit', $factura) }}"
-                                                   class="btn btn-warning btn-sm" title="Editar">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
+                                                <form class="d-inline" action="{{ route('facturas.pdf', $factura->id) }}" method="GET" target="_blank">
+                                                <button type="submit" class="btn btn-success btn-sm" title="Imprimir Factura">
+                                                    <i class="fas fa-file-pdf"></i>
+                                                </button>
+                                            </form>
                                                 <a href="{{ route('facturas.show', $factura) }}"
                                                    class="btn btn-info btn-sm" title="Ver Detalles">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
                                                 {{-- Botón PDF --}}
-                                                <a href="{{ route('factura.pdf',$factura->id) }}" class="btn btn-success btn-sm" title="Imprimir Formato" target="_blank"><i class="fas fa-print"></i></a>
+                                                <a href="{{ route('facturas.pdf', $factura->id) }}" class="btn btn-success btn-sm" title="Imprimir Formato" target="_blank"><i class="fas fa-print"></i></a>
                                                 <form class="delete-form" action="{{ route('facturas.destroy', $factura) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
