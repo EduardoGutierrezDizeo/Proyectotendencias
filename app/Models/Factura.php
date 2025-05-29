@@ -20,6 +20,13 @@ class Factura extends Model
         'registrado_por',
     ];
 
+    public function calcularTotal()
+    {
+        $total = $this->detallesFactura->sum('subtotal');
+        $this->total = $total;
+        $this->save();
+    }
+    
     public function cliente()
     {
         return $this->belongsTo(Cliente::class, 'cliente_id');

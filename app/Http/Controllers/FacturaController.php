@@ -39,8 +39,8 @@ class FacturaController extends Controller
     // Almacenar una nueva factura
     public function store(Request $request)
     {
-        
-         DB::beginTransaction();
+        $totalFactura = 0;
+        DB::beginTransaction();
 
     try {
         $facturaData = $request->all();

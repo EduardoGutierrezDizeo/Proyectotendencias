@@ -123,19 +123,21 @@
     <table>
         <thead>
             <tr>
-                <th>Cant.</th>
-                <th>Descripción</th>
-                <th>P. Unitario</th>
+                <th>ID</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Valor unitario</th>
                 <th>Subtotal</th>
             </tr>
         </thead>
         <tbody>
             @forelse($factura->detallesFactura as $detalle)
                 <tr>
-                    <td>{{ $detalle->cantidad }}</td>
+                    <td>{{ $detalle->producto->id ?? 'N/A' }}</td>
                     <td class="descripcion">{{ $detalle->producto->nombre ?? 'Producto no disponible' }}</td>
-                    <td>S/. {{ number_format($detalle->precio_unitario ?? 0, 2) }}</td>
-                    <td>S/. {{ number_format($detalle->total ?? 0, 2) }}</td>
+                    <td>{{ $detalle->cantidad_producto }}</td>
+                    <td>$ {{ number_format($detalle->precio_unitario ?? 0, 2) }}</td>
+                    <td>$ {{ number_format($detalle->subtotal ?? 0, 2) }}</td>
                 </tr>
             @empty
                 <tr>
@@ -146,7 +148,7 @@
     </table>
 
     <div class="totales">
-        <p>Total a pagar: S/. {{ number_format($factura->total, 2) }}</p>
+        <p>Total a pagar: $ {{ number_format($factura->total, 2) }}</p>
     </div>
 
     <div class="firma">
