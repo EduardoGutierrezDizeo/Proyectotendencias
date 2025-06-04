@@ -11,8 +11,10 @@ class Pago extends Model
 
     protected $fillable = [
         'factura_id',
+        'cliente_id',       
         'monto_pago',
         'fecha_pago',
+        'metodo_pago',      
         'estado',
         'registrado_por',
     ];
@@ -21,5 +23,14 @@ class Pago extends Model
     {
         return $this->belongsTo(Factura::class, 'factura_id');
     }
-    
+
+    public function usuario()
+    {
+        return $this->belongsTo(User::class, 'registrado_por');
+    }
+
+    public function cliente()
+    {
+        return $this->belongsTo(Cliente::class, 'cliente_id');
+    }
 }

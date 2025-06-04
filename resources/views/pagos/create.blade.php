@@ -1,88 +1,64 @@
 @extends('layouts.app')
 
-@section('title', 'Crear Cliente')
+@section('title', 'Registrar Pago')
+@include('layouts.partial.msg')
 
 @section('content')
-    <div class="content-wrapper">
-        <section class="content-header">
-            <div class="container-fluid">
-            </div>
-        </section>
-        @include('layouts.partial.msg')
-        <section class="content">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header bg-secondary">
-                                <h3>@yield('title')</h3>
-                            </div>
-                            <form method="POST" action="{{ route('pagos.store') }}">
-                                @csrf
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                <label>numero de factura <strong style="color:red;">(*)</strong></label>
-                                                <input type="text" class="form-control" name="factura_id"
-                                                    placeholder="ingrese el numero de la factura"
-                                                    value="{{ old('factura_id') }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                <label>numero de cliente <strong style="color:red;">(*)</strong></label>
-                                                <input type="text" class="form-control" name="cliente_id"
-                                                    placeholder="ingrese el numero del cliente"
-                                                    value="{{ old('cliente_id') }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                <label>Monto del pago <strong style="color:red;">(*)</strong></label>
-                                                <input type="text" class="form-control" name="monto_pago"
-                                                    placeholder="ingrese el valor del monto a pagar"
-                                                    value="{{ old('monto_pago') }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                <label>Fecha del pago</label>
-                                                <input type="text" class="form-control" name="fecha_pago"
-                                                    value="{{ old('fecha_pago', \Carbon\Carbon::now()->format('Y-m-d H:i:s')) }}"
-                                                    readonly>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="form-group">
-                                                <label>Metodo de pago <strong style="color:red;">(*)</strong></label>
-                                                <select class="form-control" name="metodo_pago">
-                                                    <option disabled value="">Seleccione el metodo de pago</option>
-                                                    <option value="Efectivo" {{ old('metodo_pago') == 'Efectivo' ? 'selected' : '' }}>
-                                                        Efectivo</option>
-                                                    <option value="Transferencia" {{ old('metodo_pago') == 'Transferencia' ? 'selected' : '' }}>Transferencia</option>
-                                            </div>
-                                        </div>
-                                        <input type="hidden" name="registrado_por" value="{{ Auth::user()->id }}">
-                                    </div>
-                                </div>
-                                <div class="card-footer">
-                                    <div class="row">
-                                        <div class="col-lg-2 col-xs-4">
-                                            <button type="submit"
-                                                class="btn btn-primary btn-block btn-flat">Registrar</button>
-                                        </div>
-                                        <div class="col-lg-2 col-xs-4">
-                                            <a href="{{ route('clientes.index') }}"
-                                                class="btn btn-danger btn-block btn-flat">Atrás</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+<div class="content-wrapper">
+    <section class="content-header text-center">
+        <div class="container-fluid">
+            <h1 class="text-dark font-weight-bold">Registrar Pago</h1>
+        </div>
+    </section>
+
+    @include('layouts.partial.msg')
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card shadow-lg border-dark">
+                <div class="card-header bg-dark text-white">
+                    <h3 class="card-title">Nuevo Pago</h3>
                 </div>
+                <form method="POST" action="{{ route('pagos.store') }}">
+                    @csrf
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label>Número de Factura <strong class="text-danger">*</strong></label>
+                            <select name="factura_id" class="form-control select2">
+                                <option value="">Seleccione una factura</option>
+                                @foreach($facturas as $factura)
+                                    <option value="{{ $factura->id }}" {{ old('factura_id') == $factura->id ? 'selected' : '' }}>
+                                        Factura #{{ $factura->id }} - Cliente: {{ $factura->cliente->nombre }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Monto del Pago <strong class="text-danger">*</strong></label>
+                            <input type="number" step="0.01" class="form-control" name="monto_pago" placeholder="Ingrese el valor" value="{{ old('monto_pago') }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Método de Pago <strong class="text-danger">*</strong></label>
+                            <select name="metodo_pago" class="form-control">
+                                <option value="">Seleccione método</option>
+                                <option value="Efectivo" {{ old('metodo_pago') == 'Efectivo' ? 'selected' : '' }}>Efectivo</option>
+                                <option value="Transferencia" {{ old('metodo_pago') == 'Transferencia' ? 'selected' : '' }}>Transferencia</option>
+                            </select>
+                        </div>
+
+                        <input type="hidden" name="fecha_pago" value="{{ now() }}">
+                        <input type="hidden" name="registrado_por" value="{{ Auth::id() }}">
+                    </div>
+
+                    <div class="card-footer d-flex justify-content-start">
+                        <button type="submit" class="btn btn-primary mr-2">Registrar</button>
+                        <a href="{{ route('pagos.index') }}" class="btn btn-danger">Cancelar</a>
+                    </div>
+                </form>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
+</div>
 @endsection

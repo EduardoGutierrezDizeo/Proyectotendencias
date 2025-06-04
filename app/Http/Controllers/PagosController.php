@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pago;
+use App\Models\Factura;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\QueryException;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class PagosController extends Controller
 {
@@ -16,8 +18,7 @@ class PagosController extends Controller
     public function index()
     {
         $pagos = Pago::all();
-        // dd($cartera_clientes); //para imprimir en pantalla
-        return view('pagos.index',compact('pagos'));
+        return view('pagos.index', compact('pagos'));
     }
 
     /**
@@ -25,7 +26,8 @@ class PagosController extends Controller
      */
     public function create()
     {
-        return view('pagos.create');
+        $facturas = Factura::with('cliente')->get();
+        return view('pagos.create', compact('facturas'));
     }
 
     /**
@@ -33,8 +35,25 @@ class PagosController extends Controller
      */
     public function store(Request $request)
     {
-        $pago = Pago::create($request->all());
-        return redirect()->route('pagos.index')->with('siccessMag','El registro se guardo exitosamente');
+        $request->validate([
+            'factura_id' => 'required|exists:facturas,id',
+            'monto_pago' => 'required|numeric|min:0',
+            'metodo_pago' => 'required|string',
+        ]);
+
+        // Obtener la factura para obtener cliente_id
+        $factura = Factura::findOrFail($request->factura_id);
+
+        $pago = Pago::create([
+            'factura_id' => $request->factura_id,
+            'cliente_id' => $factura->cliente_id,  // se asigna cliente desde factura
+            'monto_pago' => $request->monto_pago,
+            'fecha_pago' => now(),
+            'metodo_pago' => $request->metodo_pago,
+            'registrado_por' => Auth::id(),
+        ]);
+
+        return redirect()->route('pagos.index')->with('success', '¡Pago registrado exitosamente!');
     }
 
     /**
@@ -42,7 +61,8 @@ class PagosController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $pago = Pago::with(['usuario', 'cliente'])->findOrFail($id);
+        return view('pagos.show', compact('pago'));
     }
 
     /**
@@ -70,14 +90,11 @@ class PagosController extends Controller
             $pago->delete();
             return redirect()->route('pagos.index')->with('successMsg', 'El registro se eliminó exitosamente');
         } catch (QueryException $e) {
-            // Capturar y manejar violaciones de restricción de clave foránea
-            Log::error('Error al eliminar el país: ' . $e->getMessage());
+            Log::error('Error al eliminar el pago: ' . $e->getMessage());
             return redirect()->route('pagos.index')->withErrors('El registro que desea eliminar tiene información relacionada. Comuníquese con el Administrador');
         } catch (Exception $e) {
-            // Capturar y manejar cualquier otra excepción
-            Log::error('Error inesperado al eliminar el país: ' . $e->getMessage());
+            Log::error('Error inesperado al eliminar el pago: ' . $e->getMessage());
             return redirect()->route('pagos.index')->withErrors('Ocurrió un error inesperado al eliminar el registro. Comuníquese con el Administrador');
         }
     }
-
 }

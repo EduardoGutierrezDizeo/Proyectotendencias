@@ -12,12 +12,10 @@
 
     <section class="content">
         <div class="container-fluid">
-
             <div class="row mb-3">
                 <div class="col-12 text-start">
-                    {{-- Botón salir al panel de control --}}
-                    <a href="{{ route('dashboard') }}" class="btn btn-secondary" title="Salir">
-                        <i class="fas fa-arrow-left"></i> Salir
+                    <a href="{{ route('dashboard') }}" class="btn btn-outline-dark" title="Panel de control">
+                        <i class="fas fa-arrow-left"></i> Volver
                     </a>
                 </div>
             </div>
@@ -25,23 +23,23 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card border-dark shadow-lg">
-                        <div class="card-header d-flex justify-content-between align-items-center"
-                             style="background-color: #000; color: #fff; font-size: 1.5rem; font-weight: 600;">
-                            Listado de Pagos
+                        <div class="card-header d-flex justify-content-between align-items-center bg-dark text-white">
+                            <span style="font-size: 1.5rem; font-weight: 600;">Listado de Pagos</span>
 
-                            <a href="{{ route('pagos.create') }}" class="btn btn-danger" title="Nuevo">
-                                <i class="fas fa-plus nav-icon"></i>
+                            <a href="{{ route('pagos.create') }}" class="btn btn-danger" title="Nuevo Pago">
+                                <i class="fas fa-plus"></i> Nuevo
                             </a>
                         </div>
 
                         <div class="card-body bg-white">
                             <table id="example1" class="table table-bordered text-center table-striped">
-                                <thead style="background-color: #f5d76e; color: #000;">
+                                <thead class="bg-warning text-dark">
                                     <tr>
                                         <th>ID</th>
-                                        <th>ID Factura Venta</th>
+                                        <th>Factura</th>
                                         <th>Monto Pagado</th>
                                         <th>Fecha de Pago</th>
+                                        <th>Ver</th>
                                         <th>Eliminar</th>
                                     </tr>
                                 </thead>
@@ -52,6 +50,11 @@
                                         <td>{{ $pago->factura_id }}</td>
                                         <td>${{ number_format($pago->monto_pago, 2) }}</td>
                                         <td>{{ $pago->fecha_pago }}</td>
+                                        <td>
+                                            <a href="{{ route('pagos.show', $pago->id) }}" class="btn btn-info btn-sm" title="Ver Detalle">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                        </td>
                                         <td>
                                             <form class="delete-form" action="{{ route('pagos.destroy', $pago) }}" method="POST">
                                                 @csrf
@@ -66,13 +69,13 @@
                                 </tbody>
                             </table>
 
-                            {{-- Paginación opcional --}}
+                            {{-- Paginación si usas --}}
                             {{-- {{ $pagos->links() }} --}}
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </section>
-</di
+</div>
+@endsection

@@ -11,7 +11,9 @@ use App\Http\Controllers\CarteraProveedoresController;
 use App\Http\Controllers\CarteraClientesController;
 use App\Http\Controllers\PagosController;
 use App\Models\Proveedor;
+
 use Illuminate\Support\Facades\Auth;
+
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -33,8 +35,12 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('carteraClientes', CarteraClientesController::class);
     Route::resource('pagos', PagosController::class);
 
+    Route::get('compras/create', [CompraController::class, 'create'])->name('compras.create');
+    Route::resource('compras', CompraController::class);
+    Route::get('pagos/create', [PagosController::class, 'create'])->name('pagos.create');
 
-    
+
+    Route::get('compras/pdf/{id}', [CompraController::class, 'generatePDF'])->name('compras.pdf');
     Route::get('facturas/pdf/{id}', [FacturaController::class, 'generatePDF'])->name('facturas.pdf');
     Route::get('cambioestadoproducto', [ProductoController::class, 'cambioestadoproducto'])->name('cambioestadoproducto');
     Route::get('cambioestadocliente', [ClienteController::class, 'cambioestadocliente'])->name('cambioestadocliente');
