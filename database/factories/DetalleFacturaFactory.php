@@ -16,7 +16,6 @@ class DetalleFacturaFactory extends Factory
             'subtotal' => function (array $attributes) {
                 return $attributes['cantidad_producto'] * $attributes['precio_unitario'];
             },
-            'estado' => $this->faker->boolean(),
         ];
     }
 }

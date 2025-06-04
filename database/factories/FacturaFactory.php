@@ -10,7 +10,6 @@ class FacturaFactory extends Factory
     {
         return [
             'cliente_id' => \App\Models\Cliente::inRandomOrder()->first()->id,
-            'vendedor_id' => \App\Models\Vendedor::inRandomOrder()->first()->id,
             'fecha' => $this->faker->dateTimeThisMonth,
             'total' => $this->faker->randomFloat(2, 50, 5000),
             'estado' => $this->faker->boolean(),

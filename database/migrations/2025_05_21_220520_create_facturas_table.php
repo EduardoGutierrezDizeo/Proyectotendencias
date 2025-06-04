@@ -11,11 +11,10 @@ return new class extends Migration
         Schema::create('facturas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('cliente_id')->constrained('clientes');
-            $table->foreignId('vendedor_id')->constrained('vendedores');
             $table->dateTime('fecha');
             $table->decimal('total', 10, 2);
             $table->boolean('estado')->default(true);
-            $table->foreignId('registrado_por')->constrained('users');
+            $table->foreignId('registrado_por')->constrained('users')->change();
             $table->timestamps();
         });
     }

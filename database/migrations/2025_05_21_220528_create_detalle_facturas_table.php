@@ -15,7 +15,6 @@ return new class extends Migration
             $table->integer('cantidad_producto');
             $table->decimal('precio_unitario', 10, 2);
             $table->decimal('subtotal', 10, 2);
-            $table->boolean('estado')->default(true);
             $table->timestamps();
         });
     }
