@@ -1,117 +1,161 @@
 @extends('layouts.app')
 
+@section('title', 'Registrar Compra')
+
 @section('content')
-<div class="d-flex justify-content-center align-items-center" style="min-height: 90vh;">
-    <div class="container bg-white p-4 rounded shadow border" style="max-width: 700px;">
+    <div class="content-wrapper">
+        <section class="content-header">
+            <div class="container-fluid"></div>
+        </section>
 
-        <h2 class="text-center text-danger mb-4">Registrar Compra</h2>
+        @include('layouts.partial.msg')
 
-        <form action="{{ route('compras.store') }}" method="POST">
-            @csrf
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card border-dark shadow-lg">
+                            <div class="card-header bg-dark text-white">
+                                <h3>@yield('title')</h3>
+                            </div>
+                            <form method="POST" action="{{ route('compras.store') }}" id="form-compra">
+                                @csrf
+                                <div class="card-body" style="background-color: #f5f5f5;">
+                                    <!-- Datos Principales -->
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Proveedor <strong style="color:red;">(*)</strong></label>
+                                                <select class="form-control select2" name="proveedor_id" id="select-proveedor" required>
+                                                    <option value="">Seleccione un proveedor</option>
+                                                    @foreach($proveedores as $proveedor)
+                                                        <option value="{{ $proveedor->id }}">{{ $proveedor->nombre }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Fecha <strong style="color:red;">(*)</strong></label>
+                                                <input type="date" class="form-control" name="fecha_compra" id="fecha" 
+                                                    value="{{ date('Y-m-d') }}" required>
+                                            </div>
+                                        </div>
+                                    </div>
 
-            {{-- Proveedor y Fecha --}}
-            <div class="row mb-3">
-                <div class="col-6">
-                    <label class="form-label fw-bold">Proveedor</label>
-                    <select name="proveedor_id" class="form-control select2" required>
-                        <option value="">Seleccione un proveedor</option>
-                        @foreach($proveedores as $proveedor)
-                            <option value="{{ $proveedor->id }}">{{ $proveedor->nombre }}</option>
-                        @endforeach
-                    </select>
+                                    <!-- Tabla de Detalles -->
+                                    <div class="row mt-4">
+                                        <div class="col-12">
+                                            <h4>Detalles de Compra</h4>
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered" id="tabla-detalles">
+                                                    <thead class="thead-dark">
+                                                        <tr>
+                                                            <th>Producto</th>
+                                                            <th>Cantidad</th>
+                                                            <th>Precio Unitario</th>
+                                                            <th>Subtotal</th>
+                                                            <th>Acciones</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="detalles-body">
+                                                        <!-- Detalles se agregarán aquí dinámicamente -->
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <th colspan="3" class="text-right">TOTAL:</th>
+                                                            <th id="total-general">0.00</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Formulario para agregar detalles -->
+                                    <div class="row mt-3">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Producto <strong style="color:red;">(*)</strong></label>
+                                                <select class="form-control select2" id="select-producto">
+                                                    <option value="">Seleccione proveedor primero</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>Cantidad <strong style="color:red;">(*)</strong></label>
+                                                <input type="number" class="form-control" id="cantidad" min="1" value="1">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>Precio Unitario</label>
+                                                <input type="number" class="form-control" id="precio-unitario" step="0.01" min="0">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>Subtotal</label>
+                                                <input type="number" class="form-control" id="subtotal" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 d-flex align-items-end">
+                                            <button type="button" class="btn btn-primary btn-block" id="btn-agregar-detalle">
+                                                <i class="fas fa-plus"></i> Agregar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card-footer bg-dark">
+                                    <div class="row">
+                                        <div class="col-lg-2 col-xs-4">
+                                            <button type="submit" class="btn btn-success btn-block btn-flat">
+                                                <i class="fas fa-save"></i> Registrar Compra
+                                            </button>
+                                        </div>
+                                        <div class="col-lg-2 col-xs-4">
+                                            <a href="{{ route('compras.index') }}" class="btn btn-danger btn-block btn-flat">
+                                                <i class="fas fa-times"></i> Cancelar
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-
-                <div class="col-6">
-                    <label class="form-label fw-bold">Fecha de Compra</label>
-                    <input type="date" name="fecha_compra" class="form-control" required>
-                </div>
             </div>
-
-            {{-- Productos dinámicos --}}
-            <div class="mb-3">
-                <label class="form-label fw-bold">Productos</label>
-                <select class="form-control select2" name="productos_ids[]" multiple="multiple" id="productos_select">
-                    @foreach($productos as $producto)
-                        <option 
-                            value="{{ $producto->id }}" 
-                            data-nombre="{{ $producto->nombre }}" 
-                            data-stock="{{ $producto->stock }}"
-                        >
-                            {{ $producto->nombre }} (Stock: {{ $producto->stock }})
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div id="productos_detalles" class="mb-3"></div>
-
-            {{-- Estado --}}
-            <div class="mb-3">
-                <label class="form-label fw-bold">Estado de Pago</label>
-                <select name="estado" class="form-select">
-                    <option value="0">Pendiente</option>
-                    <option value="1">Pagado</option>
-                </select>
-            </div>
-
-            <input type="hidden" name="registrado_por" value="{{ Auth::user()->id }}">
-
-            {{-- Botones --}}
-            <div class="text-center mt-4">
-                <a href="{{ route('compras.index') }}" class="btn btn-outline-pink btn-sm me-2" style="background-color: #f8d7da; border-color: #f5c2c7; color: #842029;">
-                    <i class="bi bi-arrow-left-circle"></i> Atrás
-                </a>
-                <button type="submit" class="btn btn-danger btn-sm">
-                    <i class="bi bi-save"></i> Guardar Compra
-                </button>
-            </div>
-        </form>
+        </section>
     </div>
-</div>
 @endsection
 
+@push('scripts')
+    <script src="{{ asset('backend/dist/js/compra.js') }}"></script>
+@endpush
+
 @section('scripts')
-<script>
-    $(document).ready(function() {
-        $('.select2').select2({
-            width: '100%',
-            placeholder: 'Seleccione productos',
-            allowClear: true
+@parent
+@if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            text: '{{ session('success') }}',
+            showConfirmButton: false,
+            timer: 3000
         });
-
-        $('#productos_select').on('change', function() {
-            const selected = $(this).val();
-            let html = '';
-
-            // Para evitar duplicados si se deselecciona un producto
-            const selectedSet = new Set(selected);
-
-            // Limpio el contenedor para volver a generar los campos
-            $('#productos_detalles').empty();
-
-            if(selected && selected.length > 0) {
-                // Recorremos las opciones seleccionadas y buscamos sus atributos data
-                $('#productos_select option:selected').each(function() {
-                    const id = $(this).val();
-                    const nombre = $(this).data('nombre');
-                    const stock = $(this).data('stock');
-
-                    // Generamos el bloque para cada producto
-                    html += `
-                        <div class="border rounded p-2 mb-2">
-                            <strong>${nombre}</strong><br>
-                            <input type="hidden" name="productos[${id}][id]" value="${id}">
-                            <label class="form-label fw-bold">Precio Compra</label>
-                            <input type="number" name="productos[${id}][precio_compra]" step="0.01" class="form-control form-control-sm mb-2" required>
-                            <label class="form-label fw-bold">Cantidad</label>
-                            <input type="number" name="productos[${id}][cantidad]" min="1" class="form-control form-control-sm" required>
-                        </div>
-                    `;
-                });
-
-                $('#productos_detalles').html(html);
-            }
+    </script>
+@endif
+@if(session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '{{ session('error') }}',
         });
-    });
-</script>
+    </script>
+@endif
 @endsection

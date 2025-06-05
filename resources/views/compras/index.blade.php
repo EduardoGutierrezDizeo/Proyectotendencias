@@ -65,11 +65,8 @@
                                         </td>
                                         <td>
                                             <div class="d-flex justify-content-center gap-1">
-                                                <a href="{{ route('compras.edit', $compra) }}"
-                                                   class="btn btn-warning btn-sm" title="Editar">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                
+                                                {{-- Botón editar eliminado --}}
+
                                                 <form class="delete-form" action="{{ route('compras.destroy', $compra) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')

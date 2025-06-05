@@ -11,59 +11,45 @@ use Illuminate\Support\Facades\Auth;
 
 class ClienteController extends Controller
 {
-    public function create()
-    {
-        return view('clientes.create');
-    }
-
     public function index()
     {
         $clientes = Cliente::all();
         return view('clientes.index', compact('clientes'));
     }
 
-    public function store(Request $request)
+    public function create()
     {
-        $request->validate([
-            'nombre' => 'required|string|max:255',
-            'estado' => 'required|string',
+        return view('clientes.create');
+    }
+
+   public function store(Request $request)
+{
+    $request->validate([
+        'nombre' => 'required|string|max:255',
+        'telefono' => 'nullable|string|max:20',
+        'correo_electronico' => 'nullable|email|max:255',
+        'direccion' => 'nullable|string|max:255',
+        'estado' => 'required|boolean',
+        'registrado_por' => 'required|integer',
+    ]);
+
+    try {
+        Cliente::create([
+            'nombre' => $request->nombre,
+            'telefono' => $request->telefono,
+            'correo_electronico' => $request->correo_electronico,
+            'direccion' => $request->direccion,
+            'estado' => $request->estado,
+            'registrado_por' => $request->registrado_por,
         ]);
 
-        try {
-            Cliente::create([
-                'nombre' => $request->nombre,
-                'telefono' => $request->telefono,
-                'direccion' => $request->direccion,
-                'nit' => $request->nit,
-                'correo_electronico' => $request->correo_electronico,
-                'credito_disponible' => $request->credito_disponible ?? 0,
-                'deuda_actual' => $request->deuda_actual ?? 0,
-                'estado' => $request->estado,
-                'registrado_por' => Auth::user()->name,
-                'nombre_negocio' => $request->nombre_negocio,
-            ]);
-
-            return redirect()->route('clientes.index')->with('successMsg', 'El cliente fue registrado exitosamente');
-        } catch (Exception $e) {
-            Log::error('Error al crear cliente: ' . $e->getMessage());
-            return redirect()->back()->withErrors('Ocurrió un error al guardar el cliente. Intenta nuevamente.');
-        }
+        return redirect()->route('clientes.index')->with('successMsg', 'El cliente fue registrado exitosamente');
+    } catch (Exception $e) {
+        Log::error('Error al crear cliente: ' . $e->getMessage());
+        return redirect()->back()->withErrors('Ocurrió un error al guardar el cliente. Intenta nuevamente.')->withInput();
     }
+}
 
-    public function show(string $id)
-    {
-        //
-    }
-
-    public function edit(string $id)
-    {
-        //
-    }
-
-    public function update(Request $request, string $id)
-    {
-        //
-    }
 
     public function destroy(Cliente $cliente)
     {
@@ -85,4 +71,45 @@ class ClienteController extends Controller
         $cliente->estado = $request->estado;
         $cliente->save();
     }
+    public function show($id)
+{
+   $cliente = Cliente::findOrFail($id);
+    return view('clientes.show', compact('cliente'));
+}
+
+public function edit($id)
+{
+    $cliente = Cliente::findOrFail($id);
+    return view('clientes.edit', compact('cliente'));
+}
+
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'nombre' => 'required|string|max:255',
+        'telefono' => 'nullable|string|max:20',
+        'correo' => 'nullable|email|max:255',
+        'direccion' => 'nullable|string|max:255',
+        'estado' => 'required|in:0,1',
+    ]);
+
+    try {
+        $cliente = Cliente::findOrFail($id);
+        $cliente->update([
+            'nombre' => $request->nombre,
+            'nombre_negocio' => $request->nombre_negocio,
+            
+            'telefono' => $request->telefono,
+            'correo_electronico' => $request->correo,
+            'direccion' => $request->direccion,
+            'estado' => $request->estado,
+        ]);
+
+        return redirect()->route('clientes.index')->with('successMsg', 'El cliente fue actualizado exitosamente');
+    } catch (Exception $e) {
+        Log::error('Error al actualizar cliente: ' . $e->getMessage());
+        return redirect()->back()->withErrors('Ocurrió un error al actualizar el cliente. Intenta nuevamente.')->withInput();
+    }
+}
+
 }

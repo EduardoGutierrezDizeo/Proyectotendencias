@@ -159,7 +159,7 @@ class FacturaController extends Controller
     // Mostrar detalle de factura (puedes personalizar la vista después)
     public function show(Factura $factura)
     {
-        return "Vista de factura aún no disponible.";
+        return view('facturas.show', compact('factura'));
     }
 
     public function generatePDF($id)

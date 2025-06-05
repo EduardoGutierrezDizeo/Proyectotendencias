@@ -4,6 +4,7 @@
 
 @section('content')
 <div class="content-wrapper">
+
     {{-- Encabezado --}}
     <section class="content-header text-center">
         <div class="container-fluid">
@@ -16,8 +17,8 @@
 
     <section class="content">
         <div class="container-fluid">
-            
-            {{-- Botones superior: volver y crear --}}
+
+            {{-- Botones superiores --}}
             <div class="row mb-3">
                 <div class="col-6 text-start">
                     <a href="{{ route('dashboard') }}" class="btn btn-secondary" title="Volver al Panel">
@@ -26,7 +27,7 @@
                 </div>
                 <div class="col-6 text-end">
                     <a href="{{ route('clientes.create') }}" class="btn btn-danger" title="Nuevo Cliente">
-                        <i class="fas fa-plus"></i> Nuevo Cliente
+                        <i class="fas fa-user-plus"></i> Nuevo Cliente
                     </a>
                 </div>
             </div>
@@ -47,11 +48,12 @@
                                         <tr>
                                             <th>ID</th>
                                             <th>Nombre</th>
+                                            <th>Documento</th>
                                             <th>Teléfono</th>
                                             <th>Dirección</th>
                                             <th>Correo</th>
                                             <th>Estado</th>
-                                            <th style="min-width: 120px;">Acciones</th>
+                                            <th style="min-width: 150px;">Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -59,26 +61,32 @@
                                         <tr>
                                             <td>{{ $cliente->id }}</td>
                                             <td>{{ $cliente->nombre }}</td>
+                                            <td>{{ $cliente->nit }}</td>
                                             <td>{{ $cliente->telefono }}</td>
                                             <td>{{ $cliente->direccion }}</td>
                                             <td>{{ $cliente->correo_electronico }}</td>
-                                             <td>
+                                            <td>
                                                 <input data-type="cliente" data-id="{{ $cliente->id }}"
-                                                   class="toggle-class" type="checkbox"
-                                                   data-onstyle="success" data-offstyle="danger"
-                                                   data-toggle="toggle" data-on="Activo" data-off="Inactivo"
-                                                   {{ $cliente->estado ? 'checked' : '' }}
-                                                   style="min-width: 100px;">
+                                                       class="toggle-class" type="checkbox"
+                                                       data-onstyle="success" data-offstyle="danger"
+                                                       data-toggle="toggle" data-on="Activo" data-off="Inactivo"
+                                                       {{ $cliente->estado ? 'checked' : '' }}
+                                                       style="min-width: 100px;">
                                             </td>
                                             <td>
                                                 <div class="d-flex justify-content-center">
+                                                    {{-- Ver --}}
+                                                    <a href="{{ route('clientes.show', $cliente) }}"
+                                                       class="btn btn-info btn-sm me-1" title="Ver">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
                                                     {{-- Editar --}}
                                                     <a href="{{ route('clientes.edit', $cliente) }}"
                                                        class="btn btn-warning btn-sm me-1" title="Editar">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
                                                     {{-- Eliminar --}}
-                                                    <form class="delete-form" action="{{ route('clientes.destroy', $cliente) }}" method="POST" >
+                                                    <form class="delete-form" action="{{ route('clientes.destroy', $cliente) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
@@ -93,7 +101,7 @@
                                 </table>
                             </div>
 
-                            {{-- Paginación opcional --}}
+                            {{-- Paginación (si usas paginación en el controlador) --}}
                             {{-- {{ $clientes->links() }} --}}
                         </div>
                     </div>

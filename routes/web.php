@@ -23,21 +23,24 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    
+
     Route::get('/home', [HomeController::class, 'index'])->name('home');
-    Route::resource('productos', ProductoController::class); 
+    Route::resource('productos', ProductoController::class);
     Route::resource('clientes', ClienteController::class);
     Route::resource('proveedores', ProveedorController::class);
-    Route::resource('facturas', FacturaController::class); 
+    Route::resource('facturas', FacturaController::class);
     Route::resource('compras', CompraController::class);
     Route::resource('carteraProveedores', CarteraProveedoresController::class)->parameters([
-        'carteraProveedores' => 'carteraProveedor']);
+        'carteraProveedores' => 'carteraProveedor'
+    ]);
     Route::resource('carteraClientes', CarteraClientesController::class);
     Route::resource('pagos', PagosController::class);
 
     Route::get('compras/create', [CompraController::class, 'create'])->name('compras.create');
     Route::resource('compras', CompraController::class);
     Route::get('pagos/create', [PagosController::class, 'create'])->name('pagos.create');
+    Route::get('/compras/productos-por-proveedor/{proveedorId}', [CompraController::class, 'productosPorProveedor'])
+    ->name('compras.productosPorProveedor');
 
 
     Route::get('compras/pdf/{id}', [CompraController::class, 'generatePDF'])->name('compras.pdf');
@@ -49,7 +52,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('cambioestadocompra', [CompraController::class, 'cambioestadocompra'])->name('cambioestadocompra');
     Route::get('cambioestadocarteracliente', [CarteraClientesController::class, 'cambioestadocarteracliente'])->name('cambioestadocarteracliente');
     Route::get('cambioestadocarteraproveedor', [CarteraProveedoresController::class, 'cambioestadocarteraproveedor'])->name('cambioestadocarteraproveedor');
-    
+
 });
 
 Route::get('/dashboard', function () {
@@ -75,7 +78,7 @@ Route::get('/dashboard', function () {
 // Route::get('/user/{id}', function ($id) {
 //     return 'ID de usuario: ' . $id;
 //    })->where('id', '[0-9]{3}');
-  
+
 // Route::prefix('admin')->group(function () {
 //     Route::get('/', function () {
 //     return 'Panel de administración';

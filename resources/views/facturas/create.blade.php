@@ -142,26 +142,31 @@
     </div>
 @endsection
 
+@push('scripts')
+    <script src="{{ asset('backend/dist/js/factura.js') }}"></script>
+@endpush
+
 @section('scripts')
-@parent
-@if(session('success'))
-    <script>
-        Swal.fire({
-            icon: 'success',
-            title: 'Éxito',
-            text: '{{ session('success') }}',
-            showConfirmButton: false,
-            timer: 3000
-        });
-    </script>
-@endif
-@if(session('error'))
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: '{{ session('error') }}',
-        });
-    </script>
-@endif
+    <!-- Primero los mensajes flash -->
+    @if(session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: "{{ session('success') }}",
+                showConfirmButton: false,
+                timer: 3000
+            });
+        </script>
+    @endif
+    @if(session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: "{{ session('error') }}",
+            });
+        </script>
+    @endif
 @endsection
+

@@ -9,6 +9,9 @@ class DetalleCompra extends Model
 {
     use HasFactory;
 
+    protected $table = 'detalle_compras';
+    protected $primaryKey = 'id';
+
     protected $fillable = [
         'compra_id',
         'producto_id',
@@ -17,15 +20,13 @@ class DetalleCompra extends Model
         'subtotal',
     ];
 
-    // Relación con compra
     public function compra()
     {
         return $this->belongsTo(Compra::class);
     }
 
-    // Relación con producto
     public function producto()
     {
-        return $this->belongsTo(Producto::class);
+        return $this->belongsTo(Producto::class, 'producto_id');
     }
 }

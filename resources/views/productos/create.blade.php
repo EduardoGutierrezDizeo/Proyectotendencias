@@ -21,15 +21,19 @@
                     <label class="form-label fw-bold">Proveedor</label>
                     <div class="input-group input-group-sm">
                         <select class="form-control select2" name="proveedor_id" id="select-proveedor">
-							<option value="">Seleccione un proveedor</option>
-							@foreach($proveedores as $proveedor)
-								<option value="{{ $proveedor->id }}">{{ $proveedor->nombre }}</option>
-							@endforeach
-						</select>
+                            <option value="">Seleccione un proveedor</option>
+                            @foreach($proveedores as $proveedor)
+                                <option value="{{ $proveedor->id }}" {{ old('proveedor_id') == $proveedor->id ? 'selected' : '' }}>
+                                    {{ $proveedor->nombre }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
                     @error('proveedor_id') <div class="text-danger small">{{ $message }}</div> @enderror
                 </div>
             </div>
+
+           
 
             {{-- Precio compra y venta --}}
             <div class="row mb-3">
@@ -48,9 +52,9 @@
             {{-- Stock y Estado --}}
             <div class="row mb-3">
                 <div class="col-6">
-                    <label class="form-label fw-bold">Stock</label>
-                    <input type="number" name="stock" class="form-control form-control-sm" value="{{ old('stock') }}">
-                    @error('stock') <div class="text-danger small">{{ $message }}</div> @enderror
+                    <label class="form-label fw-bold">Stock Actual</label>
+                    <input type="number" name="stockActual" class="form-control form-control-sm" value="{{ old('stockActual') }}">
+                    @error('stockActual') <div class="text-danger small">{{ $message }}</div> @enderror
                 </div>
                 <div class="col-6">
                     <label class="form-label fw-bold">Estado</label>

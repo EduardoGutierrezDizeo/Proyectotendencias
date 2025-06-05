@@ -34,30 +34,27 @@ class ProductoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        // Validación de los datos
-        $validated = $request->validate([
-            'nombre' => 'required|string|max:255',
-            'descripcion' => 'required|string',
-            'precio_compra' => 'required|numeric',
-            'precio_venta' => 'required|numeric',
-            'stock' => 'required|integer',
-            'categoria' => 'required|string|in:Comida,Bebidas,Enlatados', // Validar que la categoría esté dentro de las opciones
-            'proveedor_id' => 'required|exists:proveedores,id',  // Asegura que el proveedor exista en la base de datos
-            'estado' => 'required|boolean',  // Si 'estado' es un campo booleano (activo/inactivo)
-            // 'registrado_por' no se valida, ya que será añadido automáticamente
-        ]);
+   public function store(Request $request)
+{
+    $validated = $request->validate([
+        'nombre' => 'required|string|max:255',
+        'precio_compra' => 'required|numeric',
+        'precio_venta' => 'required|numeric',
+        'stockActual' => 'required|integer',
+        'proveedor_id' => 'required|exists:proveedores,id',
+        'estado' => 'required|boolean',
+    ]);
 
-        // Agregar el 'registrado_por' con el ID del usuario autenticado
-        $validated['registrado_por'] = Auth::user()->id;
+    $validated['gramaje'] = 0;
+    $validated['stockMinimo'] = 0;
+    $validated['registrado_por'] = Auth::user()->id;
 
-        // Crear el producto con los datos validados
-        Producto::create($validated);
+    Producto::create($validated);
 
-        // Redirigir a la lista de productos con mensaje de éxito
-        return redirect()->route('productos.index')->with('successMsg', 'El registro se guardó exitosamente');
-    }
+    return redirect()->route('productos.index')->with('successMsg', 'El registro se guardó exitosamente');
+}
+
+
 
     /**
      * Remove the specified resource from storage.
@@ -84,4 +81,45 @@ class ProductoController extends Controller
         $producto->estado = $request->estado;
         $producto->save();
     }
+    // Mostrar un producto específico
+    public function show($id)
+    {
+        $producto = Producto::findOrFail($id);
+        return view('productos.show', compact('producto'));
+    }
+
+    // Mostrar formulario para editar producto
+    public function edit($id)
+    {
+        $producto = Producto::findOrFail($id);
+        // Si tienes proveedores, pásalos también para el select
+        $proveedores = \App\Models\Proveedor::all();
+        return view('productos.edit', compact('producto', 'proveedores'));
+    }
+
+    // Actualizar el producto
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'precio_compra' => 'required|numeric',
+            'precio_venta' => 'required|numeric',
+            'stockActual' => 'required|integer',
+            'stockMinimo' => 'required|integer',
+            'proveedor_id' => 'required|exists:proveedores,id',
+            'estado' => 'required|boolean',
+        ]);
+
+        $producto = Producto::findOrFail($id);
+        $producto->update($request->all());
+
+        return redirect()->route('productos.index')->with('success', 'Producto actualizado correctamente');
+    }
+
+    public function getByProveedor($id)
+{
+    $productos = Producto::where('proveedor_id', $id)->get(['id', 'nombre', 'precio_compra']);
+    return response()->json($productos);
+}
+
 }

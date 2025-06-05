@@ -14,20 +14,25 @@ class ProveedorController extends Controller
     use ValidatesRequests;
 
     // Mostrar la lista de proveedores
-   public function index()
-{
-    $proveedores = Proveedor::all();  
-    
-    return view('proveedores.index', compact('proveedores'));
-}
+    public function index()
+    {
+        $proveedores = Proveedor::all();  
+        return view('proveedores.index', compact('proveedores'));
+    }
 
+    // Mostrar un proveedor específico
+    public function show(Proveedor $proveedor)
+    {
+      return view('proveedores.show', compact('proveedor'));
+    }
 
+    // Mostrar formulario para crear
     public function create()
     {
         return view('proveedores.create');
     }
 
-    // Almacenar un nuevo proveedor
+    // Guardar nuevo proveedor
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -44,13 +49,13 @@ class ProveedorController extends Controller
         return redirect()->route('proveedores.index')->with('success', 'Proveedor registrado correctamente.');
     }
 
-    // Mostrar el formulario para editar un proveedor
+    // Mostrar formulario para editar
     public function edit(Proveedor $proveedor)
     {
         return view('proveedores.edit', compact('proveedor'));
     }
 
-    // Actualizar un proveedor existente
+    // Actualizar proveedor
     public function update(Request $request, Proveedor $proveedor)
     {
         $validated = $request->validate([
@@ -67,25 +72,23 @@ class ProveedorController extends Controller
         return redirect()->route('proveedores.index')->with('success', 'Proveedor actualizado correctamente.');
     }
 
-    // Eliminar un proveedor
-      public function destroy(Proveedor $proveedor)
+    // Eliminar proveedor
+    public function destroy(Proveedor $proveedor)
     {
-		try {
+        try {
             $proveedor->delete();
             return redirect()->route('proveedores.index')->with('successMsg', 'El registro se eliminó exitosamente');
         } catch (QueryException $e) {
-            // Capturar y manejar violaciones de restricción de clave foránea
-            Log::error('Error al eliminar el país: ' . $e->getMessage());
+            Log::error('Error al eliminar el proveedor: ' . $e->getMessage());
             return redirect()->route('proveedores.index')->withErrors('El registro que desea eliminar tiene información relacionada. Comuníquese con el Administrador');
         } catch (Exception $e) {
-            // Capturar y manejar cualquier otra excepción
-            Log::error('Error inesperado al eliminar el país: ' . $e->getMessage());
+            Log::error('Error inesperado al eliminar el proveedor: ' . $e->getMessage());
             return redirect()->route('proveedores.index')->withErrors('Ocurrió un error inesperado al eliminar el registro. Comuníquese con el Administrador');
         }
     }
 
-
-     public function cambioestadoproveedor(Request $request)
+    // Cambiar estado 
+    public function cambioestadoproveedor(Request $request)
     {
         $proveedor = Proveedor::find($request->id);
         $proveedor->estado = $request->estado;

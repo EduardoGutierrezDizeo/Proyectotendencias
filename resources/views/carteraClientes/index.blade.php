@@ -38,6 +38,7 @@
                                         <th>ID Factura Venta</th>
                                         <th>Saldo Pendiente</th>
                                         <th>Estado</th>
+                                        <th>Ver</th> {{-- Nueva columna para ver detalle --}}
                                         <th>Eliminar</th>
                                     </tr>
                                 </thead>
@@ -54,6 +55,12 @@
                                                    data-toggle="toggle" data-on="Activo" data-off="Inactivo"
                                                    {{ $cartera_cliente->estado ? 'checked' : '' }}
                                                    style="min-width: 100px;">
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('carteraClientes.show', $cartera_cliente->id) }}" 
+                                               class="btn btn-info btn-sm" title="Ver Detalle">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
                                         </td>
                                         <td>
                                             <form class="delete-form"
