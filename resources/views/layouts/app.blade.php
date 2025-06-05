@@ -98,5 +98,9 @@
     <!-- Select2 -->
     <script src="{{ asset('backend/dist/js/select2.js') }}"></script>
     <script src="{{ asset('backend/dist/js/selectors.js') }}"></script>
+
+    <script src="{{ asset('js/app.js') }}"></script>
+    @stack('scripts')
+    
 </body>
 </html>

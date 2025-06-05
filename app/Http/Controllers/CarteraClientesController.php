@@ -42,7 +42,11 @@ class CarteraClientesController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // Buscar el registro por su id
+    $cartera_cliente = CarteraCliente::findOrFail($id);
+
+    // Retornar la vista con el registro
+    return view('carteraClientes.show', compact('cartera_cliente'));
     }
 
     /**

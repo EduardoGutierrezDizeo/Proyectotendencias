@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Factura;
 use App\Models\Cliente;
 use App\Models\Vendedor;
-use App\Models\Producto; 
+use App\Models\Producto;
+use App\Models\CarteraCliente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\QueryException;
@@ -18,12 +19,12 @@ use Exception;
 class FacturaController extends Controller
 {
     // Mostrar todas las facturas con detalles y productos relacionados
-   public function index()
-{
+    public function index()
+    {
 
-     $facturas = Factura::with(['vendedor', 'detallesFactura.producto'])->get();
-    return view('facturas.index', compact('facturas'));
-}
+        $facturas = Factura::with(['vendedor', 'detallesFactura.producto'])->get();
+        return view('facturas.index', compact('facturas'));
+    }
 
 
     // Mostrar el formulario para crear una nueva factura
@@ -39,50 +40,73 @@ class FacturaController extends Controller
     // Almacenar una nueva factura
     public function store(Request $request)
     {
-        $totalFactura = 0;
         DB::beginTransaction();
 
-    try {
-        $facturaData = $request->all();
-        $facturaData['total'] = 0;
-
-        $factura = Factura::create($facturaData);
-
-        $totalFactura = 0;
-        foreach ($request->detalles as $detalle) {
-            $producto = Producto::findOrFail($detalle['producto_id']);
-            $subtotal = $producto->precioVenta * $detalle['cantidad'];
-            $totalFactura += $subtotal;
-            $factura->detallesFactura()->create([
-                'producto_id' => $detalle['producto_id'],
-                'cantidad' => $detalle['cantidad'],
-                'total' => $subtotal,
-                'registradoPor' => Auth::user()->name,
+        try {
+            // Validación (existente)
+            $validated = $request->validate([
+                'cliente_id' => 'required|exists:clientes,id',
+                'fecha' => 'required|date',
+                'total' => 'required|numeric|min:0',
+                'detalles' => 'required|array|min:1',
+                'detalles.*.producto_id' => 'required|exists:productos,id',
+                'detalles.*.cantidad' => 'required|numeric|min:1',
+                'detalles.*.precio_unitario' => 'required|numeric|min:0',
             ]);
+
+            // Crear factura (existente)
+            $factura = Factura::create([
+                'cliente_id' => $request->cliente_id,
+                'fecha' => $request->fecha,
+                'total' => $request->total,
+                'estado' => 1,
+                'registrado_por' => auth()->id(),
+            ]);
+
+            // Agregar detalles (existente)
+            foreach ($validated['detalles'] as $detalle) {
+                $producto = Producto::find($detalle['producto_id']);
+
+                if ($producto->stockActual < $detalle['cantidad']) {
+                    throw new \Exception("No hay suficiente stock para el producto: {$producto->nombre}");
+                }
+
+                $factura->detallesFactura()->create([
+                    'producto_id' => $detalle['producto_id'],
+                    'cantidad_producto' => $detalle['cantidad'],
+                    'precio_unitario' => $detalle['precio_unitario'],
+                    'subtotal' => $detalle['cantidad'] * $detalle['precio_unitario'],
+                ]);
+
+                $producto->stockActual -= $detalle['cantidad'];
+                $producto->save();
+            }
+
+            // CREAR REGISTRO EN CARTERA CLIENTE (NUEVO)
+            $cartera = CarteraCliente::create([
+                'factura_id' => $factura->id,
+                'saldo_pendiente' => $factura->total, // El saldo inicial es el total de la factura
+                'estado' => true // Estado activo
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('facturas.index')
+                ->with('success', 'Factura creada correctamente con ID: ' . $factura->id);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            DB::rollBack();
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error al crear factura: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error al crear la factura: ' . $e->getMessage())
+                ->withInput();
         }
-        $factura->update(['total' => $totalFactura]);
-        $factura = Factura::with(['cliente', 'detallesFactura.producto'])->findOrFail($factura->id);
-
-        if (!file_exists('uploads/facturas')) {
-            mkdir('uploads/facturas', 0777, true);
-        }
-
-        $timestamp = Carbon::now()->format('YmdHis');
-        $nombrePDF = 'uploads/facturas/factura_' . $factura->id . '_' . $timestamp . '.pdf';
-
-        $pdf = Pdf::loadView('facturas.pdf', compact('factura'))->setPaper('letter')->output();
-        file_put_contents($nombrePDF, $pdf);
-
-        $factura->update(['ruta_pdf' => $nombrePDF]); 
-
-        DB::commit();
-
-        return redirect()->route('facturas.index')->with('successMsg', 'La factura fue registrada y el PDF generado correctamente.');
-    } catch (Exception $e) {
-        DB::rollBack();
-        return redirect()->back()->with('errorMsg', 'Error al registrar la factura.');
-    }
-
     }
 
     // Mostrar el formulario para editar una factura
@@ -141,12 +165,12 @@ class FacturaController extends Controller
     // Mostrar detalle de factura (puedes personalizar la vista después)
     public function show(Factura $factura)
     {
-        return "Vista de factura aún no disponible.";
+        return view('facturas.show', compact('factura'));
     }
 
     public function generatePDF($id)
     {
-       $factura = Factura::with(['cliente', 'detallesFactura.producto'])->findOrFail($id);
+        $factura = Factura::with(['cliente', 'detallesFactura.producto'])->findOrFail($id);
 
 
         $pdf = Pdf::loadView('facturas.pdf', compact('factura'))->setPaper('letter');

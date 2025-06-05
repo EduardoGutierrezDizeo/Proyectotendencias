@@ -38,6 +38,7 @@
                                         <th>ID Factura Compra</th>
                                         <th>Saldo Pendiente</th>
                                         <th>Estado</th>
+                                        <th>Ver</th> {{-- Nueva columna para ver detalle --}}
                                         <th>Eliminar</th>
                                     </tr>
                                 </thead>
@@ -54,6 +55,12 @@
                                                    data-toggle="toggle" data-on="Activo" data-off="Inactivo"
                                                    {{ $cartera_proveedor->estado ? 'checked' : '' }}
                                                    style="min-width: 100px;">
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('carteraProveedores.show', $cartera_proveedor) }}" 
+                                               class="btn btn-info btn-sm" title="Ver detalle">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
                                         </td>
                                         <td>
                                             <form class="delete-form" action="{{ route('carteraProveedores.destroy', $cartera_proveedor) }}" method="POST">

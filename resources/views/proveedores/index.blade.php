@@ -13,12 +13,10 @@
 
     {{-- Mensajes flash --}}
     @include('layouts.partial.msg')
-    
-    
 
     <section class="content">
         <div class="container-fluid">
-            
+
             {{-- Botones superior: volver y crear --}}
             <div class="row mb-3">
                 <div class="col-6 text-start">
@@ -53,7 +51,7 @@
                                             <th>Correo</th>
                                             <th>Dirección</th>
                                             <th>Estado</th>
-                                            <th style="min-width: 120px;">Acciones</th>
+                                            <th style="min-width: 140px;">Acciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -74,19 +72,26 @@
                                             </td>
                                             <td>
                                                 <div class="d-flex justify-content-center">
+                                                    {{-- Ver detalles --}}
+                                                    <a href="{{ route('proveedores.show', $proveedor) }}" 
+                                                       class="btn btn-info btn-sm me-1" title="Ver detalles">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+
                                                     {{-- Editar --}}
                                                     <a href="{{ route('proveedores.edit', $proveedor) }}"
                                                        class="btn btn-warning btn-sm me-1" title="Editar">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
+
                                                     {{-- Eliminar --}}
-                                                    <form class="delete-form" action="{{ route('proveedores.destroy', $proveedor) }}" method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
-                                                        <i class="fas fa-trash-alt"></i>
-                                                    </button>
-                                                </form>
+                                                    <form class="delete-form" action="{{ route('proveedores.destroy', $proveedor) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este proveedor?');">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
+                                                    </form>
                                                 </div>
                                             </td>
                                         </tr>

@@ -67,11 +67,18 @@
                                         </td>
                                         <td>
                                             <div class="d-flex justify-content-center gap-1">
+                                                {{-- Botón Mostrar --}}
+                                                <a href="{{ route('productos.show', $producto) }}"
+                                                   class="btn btn-info btn-sm" title="Mostrar">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                {{-- Botón Editar --}}
                                                 <a href="{{ route('productos.edit', $producto) }}"
                                                    class="btn btn-warning btn-sm" title="Editar">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <form class="delete-form" action="{{ route('productos.destroy', $producto) }}" method="POST">
+                                                {{-- Formulario Eliminar --}}
+                                                <form class="delete-form" action="{{ route('productos.destroy', $producto) }}" method="POST" onsubmit="return confirm('¿Está seguro de eliminar este producto?');">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">

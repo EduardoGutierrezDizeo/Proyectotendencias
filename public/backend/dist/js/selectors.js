@@ -5,8 +5,8 @@ $(document).ready(function () {
         allowClear: true,
         width: '100%'
     });
-    $('#select-unidad').select2({
-        placeholder: 'Seleccione una unidad',
+    $('#select-producto').select2({
+        placeholder: 'Seleccione un producto',
         allowClear: true,
         width: '100%'
     });
@@ -15,8 +15,8 @@ $(document).ready(function () {
         allowClear: true,
         width: '100%'
     });
-    $('#select-pagometodo').select2({
-        placeholder: 'Seleccione un método de pago',
+    $('#select-vendedor').select2({
+        placeholder: 'Seleccione un vendedor',
         allowClear: true,
         width: '100%'
     });

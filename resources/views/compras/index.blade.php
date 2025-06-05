@@ -65,11 +65,8 @@
                                         </td>
                                         <td>
                                             <div class="d-flex justify-content-center gap-1">
-                                                <a href="{{ route('compras.edit', $compra) }}"
-                                                   class="btn btn-warning btn-sm" title="Editar">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                {{-- Puedes agregar botón ver detalles si tienes ruta --}}
+                                                {{-- Botón editar eliminado --}}
+
                                                 <form class="delete-form" action="{{ route('compras.destroy', $compra) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
@@ -77,10 +74,13 @@
                                                         <i class="fas fa-trash-alt"></i>
                                                     </button>
                                                 </form>
+
+                                                <a href="{{ route('compras.pdf', $compra->id) }}" class="btn btn-success btn-sm" title="Imprimir Formato" target="_blank">
+                                                    <i class="fas fa-print"></i>
+                                                </a>
                                             </div>
                                         </td>
                                     </tr>
-
                                     @endforeach
                                 </tbody>
                             </table>

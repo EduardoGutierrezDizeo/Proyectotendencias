@@ -34,7 +34,9 @@ class CarteraProveedoresController extends Controller
      */
     public function show(string $id)
     {
-        //
+    $carteraProveedor = CarteraProveedor::with('compra.proveedor')->findOrFail($id);
+
+    return view('carteraProveedores.show', compact('carteraProveedor'));
     }
 
     /**
