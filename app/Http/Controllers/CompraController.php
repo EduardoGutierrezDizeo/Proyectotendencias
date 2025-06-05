@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Compra;
 use App\Models\Proveedor;
 use App\Models\Producto;
+use App\Models\CarteraProveedor;
 use App\Models\DetalleCompra;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -24,7 +25,7 @@ class CompraController extends Controller
     {
         $proveedores = Proveedor::all();
         $productos = Producto::all(); // Productos iniciales (se filtran por AJAX)
-        
+
         return view('compras.create', compact('proveedores', 'productos'));
     }
 
@@ -66,6 +67,13 @@ class CompraController extends Controller
                 $producto->stockActual += $detalle['cantidad'];
                 $producto->save();
             }
+
+            // CREAR REGISTRO EN CARTERA PROVEEDOR (NUEVO)
+            CarteraProveedor::create([
+                'compra_id' => $compra->id,
+                'saldo_pendiente' => $compra->total_compra, // El saldo inicial es el total de la compra
+                'estado' => true // Estado activo
+            ]);
 
             DB::commit();
 

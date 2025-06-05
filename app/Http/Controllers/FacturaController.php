@@ -6,6 +6,7 @@ use App\Models\Factura;
 use App\Models\Cliente;
 use App\Models\Vendedor;
 use App\Models\Producto;
+use App\Models\CarteraCliente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\QueryException;
@@ -42,7 +43,7 @@ class FacturaController extends Controller
         DB::beginTransaction();
 
         try {
-            // Validación mejorada
+            // Validación (existente)
             $validated = $request->validate([
                 'cliente_id' => 'required|exists:clientes,id',
                 'fecha' => 'required|date',
@@ -53,20 +54,19 @@ class FacturaController extends Controller
                 'detalles.*.precio_unitario' => 'required|numeric|min:0',
             ]);
 
-            // Crear factura
+            // Crear factura (existente)
             $factura = Factura::create([
                 'cliente_id' => $request->cliente_id,
                 'fecha' => $request->fecha,
                 'total' => $request->total,
-                'estado' => 1, 
+                'estado' => 1,
                 'registrado_por' => auth()->id(),
             ]);
 
-            // Agregar detalles con validación de stock
+            // Agregar detalles (existente)
             foreach ($validated['detalles'] as $detalle) {
                 $producto = Producto::find($detalle['producto_id']);
 
-                // Validar stock disponible
                 if ($producto->stockActual < $detalle['cantidad']) {
                     throw new \Exception("No hay suficiente stock para el producto: {$producto->nombre}");
                 }
@@ -78,10 +78,16 @@ class FacturaController extends Controller
                     'subtotal' => $detalle['cantidad'] * $detalle['precio_unitario'],
                 ]);
 
-                // Actualizar stock del producto
                 $producto->stockActual -= $detalle['cantidad'];
                 $producto->save();
             }
+
+            // CREAR REGISTRO EN CARTERA CLIENTE (NUEVO)
+            $cartera = CarteraCliente::create([
+                'factura_id' => $factura->id,
+                'saldo_pendiente' => $factura->total, // El saldo inicial es el total de la factura
+                'estado' => true // Estado activo
+            ]);
 
             DB::commit();
 
