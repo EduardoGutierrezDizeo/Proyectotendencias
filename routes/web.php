@@ -10,7 +10,7 @@ use App\Http\Controllers\CompraController;
 use App\Http\Controllers\CarteraProveedoresController;
 use App\Http\Controllers\CarteraClientesController;
 use App\Http\Controllers\PagosController;
-use App\Models\Proveedor;
+
 
 use Illuminate\Support\Facades\Auth;
 
@@ -35,6 +35,9 @@ Route::middleware(['auth'])->group(function () {
     ]);
     Route::resource('carteraClientes', CarteraClientesController::class);
     Route::resource('pagos', PagosController::class);
+    Route::resource('pagosProveedores', App\Http\Controllers\PagosProveedoresController::class);
+
+
 
     Route::get('compras/create', [CompraController::class, 'create'])->name('compras.create');
     Route::resource('compras', CompraController::class);

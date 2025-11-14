@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\PagoProveedor;
 use App\Models\User;
 use App\Models\Cliente;
 use App\Models\Vendedor;
@@ -53,6 +54,7 @@ class DatabaseSeeder extends Seeder
             ->create();
 
         Pago::factory(20)->create();
+        PagoProveedor::factory(20)->create();
         CarteraCliente::factory(15)->create();
         CarteraProveedor::factory(10)->create();
     }

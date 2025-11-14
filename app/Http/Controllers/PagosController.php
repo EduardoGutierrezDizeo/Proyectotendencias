@@ -53,6 +53,25 @@ class PagosController extends Controller
             'registrado_por' => Auth::id(),
         ]);
 
+        $cartera = \App\Models\CarteraCliente::where('factura_id', $request->factura_id)->first();
+
+        if ($cartera) {
+            // Restar el pago del saldo pendiente
+            $cartera->saldo_pendiente -= $request->monto_pago;
+
+            // Evitar saldos negativos
+            if ($cartera->saldo_pendiente < 0) {
+                $cartera->saldo_pendiente = 0;
+            }
+
+            // Si el saldo queda en 0, marcar como pagado
+            if ($cartera->saldo_pendiente == 0) {
+                $cartera->estado = 'Pagado';
+            }
+
+            $cartera->save();
+        }
+
         return redirect()->route('pagos.index')->with('success', '¡Pago registrado exitosamente!');
     }
 

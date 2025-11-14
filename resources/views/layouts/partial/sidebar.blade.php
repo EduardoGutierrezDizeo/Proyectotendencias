@@ -77,44 +77,17 @@
             <i class="nav-icon fas fa-money-bill" style="color: white;"></i>
 
 
-            <p>Pagos</p>
+            <p>Pagos Factura</p>
           </a>
         </li>
 
         <li class="nav-item">
-          <a href="#" class="nav-link" style="color: white;">
-            <i class="nav-icon fas fa-copy" style="color: white;"></i>
-            <p>
-              Layout Options
-              <i class="fas fa-angle-left right"></i>
-            </p>
+          <a href="{{ route('pagosProveedores.index') }}" class="nav-link" style="color: white;">
+            <i class="nav-icon fas fa-money-bill" style="color: white;"></i>
+
+
+            <p>Pagos compra</p>
           </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="pages/layout/top-nav.html" class="nav-link" style="color: white;">
-                <i class="far fa-circle nav-icon" style="color: #ff66b2;"></i>
-                <p>Top Navigation</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="pages/layout/top-nav-sidebar.html" class="nav-link" style="color: white;">
-                <i class="far fa-circle nav-icon" style="color: #ff66b2;"></i>
-                <p>Top Navigation + Sidebar</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="pages/layout/boxed.html" class="nav-link" style="color: white;">
-                <i class="far fa-circle nav-icon" style="color: #ff66b2;"></i>
-                <p>Boxed</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="pages/layout/fixed-sidebar.html" class="nav-link" style="color: white;">
-                <i class="far fa-circle nav-icon" style="color: #ff66b2;"></i>
-                <p>Fixed Sidebar</p>
-              </a>
-            </li>
-          </ul>
         </li>
 
       </ul>
