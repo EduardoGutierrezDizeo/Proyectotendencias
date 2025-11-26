@@ -10,6 +10,7 @@ use App\Http\Controllers\CompraController;
 use App\Http\Controllers\CarteraProveedoresController;
 use App\Http\Controllers\CarteraClientesController;
 use App\Http\Controllers\PagosController;
+use App\Http\Controllers\LoginController;
 
 
 use Illuminate\Support\Facades\Auth;
@@ -19,12 +20,15 @@ use Illuminate\Support\Facades\Auth;
 //     return view('welcome');
 // });
 Route::get('/', function () {
-    return view('welcome');
+    return view('login');
 });
+Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
     Route::resource('productos', ProductoController::class);
     Route::resource('clientes', ClienteController::class);
     Route::resource('proveedores', ProveedorController::class);
